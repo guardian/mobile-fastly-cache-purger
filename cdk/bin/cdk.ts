@@ -1,6 +1,10 @@
-import "source-map-support/register";
-import { App } from "aws-cdk-lib";
-import { MobileFastlyCachePurger } from "../lib/mobile-fastly-cache-purger";
+import 'source-map-support/register';
+import { GuRootExperimental } from '@guardian/cdk/lib/experimental/constructs/root';
+import { MobileFastlyCachePurger } from '../lib/mobile-fastly-cache-purger';
 
-const app = new App();
-new MobileFastlyCachePurger(app, "MobileFastlyCachePurger-CODE", { stack: "mobile-fastly-cache-purger", stage: "CODE" });
+const app = new GuRootExperimental();
+new MobileFastlyCachePurger(app, 'MobileFastlyCachePurger-CODE', {
+	env: { region: 'eu-west-1' },
+	stack: 'mobile-fastly-cache-purger',
+	stage: 'CODE',
+});
