@@ -1,0 +1,60 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+# allow queued workflows to interrupt previous runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          cache: sbt
+          java-version: 11
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
+
+      - name: Clean, compile and test
+        run: sbt clean compile test assembly
+
+      - name: CDK synth
+        run: |
+            npm install -g yarn
+            cd cdk/
+            yarn install
+            yarn synth
+
+      - name: Upload to riff-raff
+        uses: guardian/actions-riff-raff@v2
+        with:
+          projectName: mobile::mobile-fastly-cache-purger
+          configPath: cdk/cdk.out/riff-raff.yaml
+          contentDirectories: |
+            mobile-fastly-cache-purger:
+              - target/scala-2.13/mobile-fastly-cache-purger.jar
+            cdk.out:
+              - cdk/cdk.out
