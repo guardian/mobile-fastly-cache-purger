@@ -15,6 +15,15 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
+    "FastlyAPIKey": {
+      "Description": "API key with purge writes for service with id FastlyServiceId",
+      "NoEcho": true,
+      "Type": "String",
+    },
+    "FastlyServiceId": {
+      "Description": "Id of service to purge",
+      "Type": "String",
+    },
   },
   "Resources": {
     "mobilefastlycachepurgerFDB90D2A": {
@@ -33,6 +42,12 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
           "Variables": {
             "APP": "mobile-fastly-cache-purger",
             "App": "mobile-fastly-cache-purger",
+            "FastlyAPIKey": {
+              "Ref": "FastlyAPIKey",
+            },
+            "FastlyServiceId": {
+              "Ref": "FastlyServiceId",
+            },
             "STACK": "mobile-fastly-cache-purger",
             "STAGE": "TEST",
             "Stack": "mobile-fastly-cache-purger",
