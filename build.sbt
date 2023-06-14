@@ -21,6 +21,6 @@ assemblyJarName := s"${name.value}.jar"
 libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-core" % "1.2.2",
   "com.amazonaws" % "aws-lambda-java-events" % "3.11.0",
-  "com.squareup.okhttp3" % "okhttp" % "4.9.2"
-
+  "com.squareup.okhttp3" % "okhttp" % "4.9.2",
+  "com.gu" %% "simple-configuration-ssm" % "1.5.6"
 )
