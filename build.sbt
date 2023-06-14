@@ -18,6 +18,11 @@ scalacOptions ++= Seq(
 
 assemblyJarName := s"${name.value}.jar"
 
+assembly / assemblyMergeStrategy := {
+  case "META-INF/MANIFEST.MF" => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
+
 libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-core" % "1.2.2",
   "com.amazonaws" % "aws-lambda-java-events" % "3.11.0",
