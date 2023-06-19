@@ -15,82 +15,9 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
-    "FastlyAPIKey": {
-      "Description": "API key with purge writes for service with id FastlyServiceId",
-      "NoEcho": true,
-      "Type": "String",
-    },
-    "FastlyServiceId": {
-      "Description": "Id of service to purge",
-      "Type": "String",
-    },
   },
   "Resources": {
-    "mobilefastlycachepurgerFDB90D2A": {
-      "DependsOn": [
-        "mobilefastlycachepurgerServiceRoleDefaultPolicy6A603663",
-        "mobilefastlycachepurgerServiceRole9FC22BE4",
-      ],
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "DistributionBucketName",
-          },
-          "S3Key": "mobile-fastly-cache-purger/TEST/mobile-fastly-cache-purger/mobile-fastly-cache-purger.jar",
-        },
-        "Environment": {
-          "Variables": {
-            "APP": "mobile-fastly-cache-purger",
-            "App": "mobile-fastly-cache-purger",
-            "FastlyAPIKey": {
-              "Ref": "FastlyAPIKey",
-            },
-            "FastlyServiceId": {
-              "Ref": "FastlyServiceId",
-            },
-            "STACK": "mobile-fastly-cache-purger",
-            "STAGE": "TEST",
-            "Stack": "mobile-fastly-cache-purger",
-            "Stage": "TEST",
-          },
-        },
-        "FunctionName": "mobile-fastly-cache-purger-cdk-TEST",
-        "Handler": "PurgerLambda::handleRequest",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "mobilefastlycachepurgerServiceRole9FC22BE4",
-            "Arn",
-          ],
-        },
-        "Runtime": "java11",
-        "Tags": [
-          {
-            "Key": "App",
-            "Value": "mobile-fastly-cache-purger",
-          },
-          {
-            "Key": "gu:cdk:version",
-            "Value": "TEST",
-          },
-          {
-            "Key": "gu:repo",
-            "Value": "guardian/mobile-fastly-cache-purger",
-          },
-          {
-            "Key": "Stack",
-            "Value": "mobile-fastly-cache-purger",
-          },
-          {
-            "Key": "Stage",
-            "Value": "TEST",
-          },
-        ],
-        "Timeout": 60,
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "mobilefastlycachepurgerServiceRole9FC22BE4": {
+    "ExecutionRole605A040B": {
       "Properties": {
         "AssumeRolePolicyDocument": {
           "Statement": [
@@ -104,25 +31,23 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": [
+        "Path": "/",
+        "Policies": [
           {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
+            "PolicyDocument": {
+              "Statement": [
                 {
-                  "Ref": "AWS::Partition",
+                  "Action": "ssm:GetParametersByPath",
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:ssm:undefined:undefined:parameter/mobile-fastly-cache-purger/TEST",
                 },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
               ],
-            ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "Conf",
           },
         ],
         "Tags": [
-          {
-            "Key": "App",
-            "Value": "mobile-fastly-cache-purger",
-          },
           {
             "Key": "gu:cdk:version",
             "Value": "TEST",
@@ -143,7 +68,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       },
       "Type": "AWS::IAM::Role",
     },
-    "mobilefastlycachepurgerServiceRoleDefaultPolicy6A603663": {
+    "ExecutionRoleDefaultPolicyA5B92313": {
       "Properties": {
         "PolicyDocument": {
           "Statement": [
@@ -234,14 +159,72 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "mobilefastlycachepurgerServiceRoleDefaultPolicy6A603663",
+        "PolicyName": "ExecutionRoleDefaultPolicyA5B92313",
         "Roles": [
           {
-            "Ref": "mobilefastlycachepurgerServiceRole9FC22BE4",
+            "Ref": "ExecutionRole605A040B",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "mobilefastlycachepurgerFDB90D2A": {
+      "DependsOn": [
+        "ExecutionRoleDefaultPolicyA5B92313",
+        "ExecutionRole605A040B",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "DistributionBucketName",
+          },
+          "S3Key": "mobile-fastly-cache-purger/TEST/mobile-fastly-cache-purger/mobile-fastly-cache-purger.jar",
+        },
+        "Environment": {
+          "Variables": {
+            "APP": "mobile-fastly-cache-purger",
+            "App": "mobile-fastly-cache-purger",
+            "STACK": "mobile-fastly-cache-purger",
+            "STAGE": "TEST",
+            "Stack": "mobile-fastly-cache-purger",
+            "Stage": "TEST",
+          },
+        },
+        "FunctionName": "mobile-fastly-cache-purger-cdk-TEST",
+        "Handler": "PurgerLambda::handleRequest",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "ExecutionRole605A040B",
+            "Arn",
+          ],
+        },
+        "Runtime": "java11",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stack",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
     },
   },
 }
