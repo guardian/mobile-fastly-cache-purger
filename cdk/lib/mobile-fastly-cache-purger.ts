@@ -17,7 +17,7 @@ export class MobileFastlyCachePurger extends GuStack {
 				Conf: new iam.PolicyDocument({
 					statements: [
 						new iam.PolicyStatement({
-							actions: [ 'ssm:GetParametersByPath' ],
+							actions: [ 'ssm:GetParameterByPath' ],
 							resources: [ `arn:aws:ssm:${scope.region}:${scope.account}:parameter/mobile-fastly-cache-purger/${this.stage}` ]
 						})
 					] }),
