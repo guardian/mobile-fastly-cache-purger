@@ -37,7 +37,10 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
             "PolicyDocument": {
               "Statement": [
                 {
-                  "Action": "ssm:GetParameterByPath",
+                  "Action": [
+                    "ssm:GetParametersByPath",
+                    "ssm:GetParameter",
+                  ],
                   "Effect": "Allow",
                   "Resource": "arn:aws:ssm:undefined:undefined:parameter/mobile-fastly-cache-purger/TEST",
                 },
