@@ -51,7 +51,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                         {
                           "Ref": "AWS::AccountId",
                         },
-                        ":parameter/mobile-fastly-cache-purger/TEST",
+                        ":parameter/cache-purger/TEST",
                       ],
                     ],
                   },
