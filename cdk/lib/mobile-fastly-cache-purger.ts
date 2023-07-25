@@ -17,15 +17,14 @@ export class MobileFastlyCachePurger extends GuStack {
 				Conf: new iam.PolicyDocument({
 					statements: [
 						new iam.PolicyStatement({
-							actions: [ 'ssm:GetParametersByPath', 'ssm:GetParameter' ],
-							effect: iam.Effect.ALLOW,
+							actions: [ 'ssm:GetParametersByPath' ],
 							resources: [ `arn:aws:ssm:${scope.region}:${scope.account}:parameter/mobile-fastly-cache-purger/${this.stage}` ]
 						})
 					] }),
 			}
 		})
 
-		new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
+		const handler = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
 			handler: 'PurgerLambda::handleRequest',
 			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
 			timeout: Duration.seconds(60),
