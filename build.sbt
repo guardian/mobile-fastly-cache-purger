@@ -7,6 +7,7 @@ description:= "Lambda function which purges the Fastly cache from mobile front."
 version := "1.0"
 
 scalaVersion := "2.13.10"
+val log4jVersion = "2.17.1"
 
 scalacOptions ++= Seq(
   "-deprecation",
@@ -17,6 +18,14 @@ scalacOptions ++= Seq(
 
 assemblyJarName := s"${name.value}.jar"
 
+assembly / assemblyMergeStrategy := {
+  case "META-INF/MANIFEST.MF" => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
+
 libraryDependencies ++= Seq(
-  "com.amazonaws" % "aws-lambda-java-core" % "1.2.2"
+  "com.amazonaws" % "aws-lambda-java-core" % "1.2.2",
+  "com.amazonaws" % "aws-lambda-java-events" % "3.11.0",
+  "com.squareup.okhttp3" % "okhttp" % "4.9.2",
+  "com.gu" %% "simple-configuration-ssm" % "1.5.6"
 )
