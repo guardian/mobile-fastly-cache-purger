@@ -1,11 +1,16 @@
-import com.amazonaws.services.lambda.runtime.events.S3Event
+import com.amazonaws.services.lambda.runtime.events.SQSEvent
 import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
 import okhttp3._
 
+import scala.jdk.CollectionConverters._
 
-object PurgerLambda extends RequestHandler[S3Event, Boolean] {
+
+object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
-  override def handleRequest(event: S3Event, context: Context): Boolean = {
+  override def handleRequest(event: SQSEvent, context: Context): Boolean = {
+
+    val records = event.getRecords.asScala.toList
+    println(records)
 
     println(s"Facia-purger lambda starting up")
 
