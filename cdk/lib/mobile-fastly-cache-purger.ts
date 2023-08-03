@@ -16,6 +16,17 @@ export class MobileFastlyCachePurger extends GuStack {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
 			path: "/",
 			inlinePolicies: {
+				logs: new iam.PolicyDocument({
+					statements: [
+						new iam.PolicyStatement({
+							actions: [ 'logs:CreateLogGroup' ],
+							resources: [ `arn:aws:logs:eu-west-1:${this.account}:*` ]
+						}),
+						new iam.PolicyStatement({
+							actions: [ 'logs:CreateLogStream', 'logs:PutLogEvents' ],
+							resources: [ `arn:aws:logs:eu-west-1:${this.account}:log-group:/aws/lambda/*:*` ]
+						})
+					] }),
 				Conf: new iam.PolicyDocument({
 					statements: [
 						new iam.PolicyStatement({

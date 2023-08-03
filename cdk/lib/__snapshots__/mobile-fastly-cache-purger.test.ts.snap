@@ -37,6 +37,49 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
             "PolicyDocument": {
               "Statement": [
                 {
+                  "Action": "logs:CreateLogGroup",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:eu-west-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":*",
+                      ],
+                    ],
+                  },
+                },
+                {
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:eu-west-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/*:*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
                   "Action": "ssm:GetParametersByPath",
                   "Effect": "Allow",
                   "Resource": {
