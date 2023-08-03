@@ -52,9 +52,15 @@ export class MobileFastlyCachePurger extends GuStack {
 			role: executionRole,
 		});
 
+		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
+
 		const queue = new sqs.Queue(this, "frontsPurgeSqs", {
 			queueName: 'sqs',
 			visibilityTimeout: Duration.seconds(70),
+			deadLetterQueue: {
+				maxReceiveCount: 3,
+				queue: dlq,
+			}
 		});
 
 		const eventSource = new lambdaEventSources.SqsEventSource(queue);
