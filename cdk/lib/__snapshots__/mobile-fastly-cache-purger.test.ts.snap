@@ -270,7 +270,6 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
     "frontsPurgeSqsC6BB4572": {
       "DeletionPolicy": "Delete",
       "Properties": {
-        "QueueName": "sqs",
         "RedrivePolicy": {
           "deadLetterTargetArn": {
             "Fn::GetAtt": [

@@ -12,7 +12,7 @@ export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
 		super(scope, id, props);
 
-		const executionRole = new iam.Role(this, 'ExecutionRole', {
+		const executionRole: iam.Role = new iam.Role(this, 'ExecutionRole', {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
 			path: "/",
 			inlinePolicies: {
@@ -37,7 +37,7 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		})
 
-		const handler = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
+		const handler: GuLambdaFunction = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
 			handler: 'PurgerLambda::handleRequest',
 			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
 			timeout: Duration.seconds(60),
@@ -54,16 +54,15 @@ export class MobileFastlyCachePurger extends GuStack {
 
 		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
 
-		const queue = new sqs.Queue(this, "frontsPurgeSqs", {
-			queueName: 'sqs',
-			visibilityTimeout: Duration.seconds(70),
+		const queue: sqs.Queue = new sqs.Queue(this, "frontsPurgeSqs", {
+			visibilityTimeout: Duration.seconds(70), 	//default for a queue is 30s, and the lambda is 60s
 			deadLetterQueue: {
 				maxReceiveCount: 3,
 				queue: dlq,
 			}
 		});
 
-		const eventSource = new lambdaEventSources.SqsEventSource(queue);
+		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
 
 		handler.addEventSource(eventSource);
 
