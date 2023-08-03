@@ -5,6 +5,7 @@ import type { App } from 'aws-cdk-lib';
 import {Duration} from 'aws-cdk-lib';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam'
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
@@ -38,5 +39,7 @@ export class MobileFastlyCachePurger extends GuStack {
 			fileName: `mobile-fastly-cache-purger.jar`,
 			role: executionRole,
 		});
+
+		const queue = new sqs.Queue(this, "frontsPurgeSqs");
 	}
 }

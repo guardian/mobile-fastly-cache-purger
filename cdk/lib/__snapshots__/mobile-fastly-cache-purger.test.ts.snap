@@ -183,6 +183,31 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
+    "frontsPurgeSqsC6BB4572": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stack",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
     "mobilefastlycachepurgerFDB90D2A": {
       "DependsOn": [
         "ExecutionRoleDefaultPolicyA5B92313",
