@@ -9,10 +9,15 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
   override def handleRequest(event: SQSEvent, context: Context): Boolean = {
 
-    println("event: ", event)
-    val records: List[PressJob] = event.getRecords.asScala.toList.flatMap(r => PressJob.toPressJob(r.getBody))
-    println("records: ", records)
-    val frontPath: String = records.head.path
+    val scalaRecords = event.getRecords.asScala.toList
+    println("scalaRecord: ", scalaRecords)
+    val pressJobs = scalaRecords.flatMap(r => {
+      println("r: ", r)
+      print(s"r body: ${r.getBody}")
+      PressJob.toPressJob(r.getBody)
+    })
+    println("pressJobs: ", pressJobs)
+    val frontPath: String = pressJobs.head.path
     println("frontPath: ", frontPath)
 
     println(s"Facia-purger lambda starting up")

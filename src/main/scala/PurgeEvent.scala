@@ -9,6 +9,7 @@ object PressJob {
   implicit val derivedDecoder: Decoder[PressJob] = deriveDecoder[PressJob]
 
   def toPressJob(input: String): Option[PressJob] = {
+    println(s"decode: ${decode(input)}")
     decode(input).toOption
   }
 }
