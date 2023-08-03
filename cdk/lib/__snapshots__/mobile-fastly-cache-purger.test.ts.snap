@@ -221,6 +221,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
             "Value": "TEST",
           },
         ],
+        "VisibilityTimeout": 70,
       },
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",

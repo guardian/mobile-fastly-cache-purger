@@ -43,6 +43,7 @@ export class MobileFastlyCachePurger extends GuStack {
 
 		const queue = new sqs.Queue(this, "frontsPurgeSqs", {
 			queueName: 'sqs',
+			visibilityTimeout: Duration.seconds(70),
 		});
 
 		const eventSource = new lambdaEventSources.SqsEventSource(queue);
