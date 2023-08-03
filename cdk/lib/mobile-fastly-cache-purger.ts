@@ -4,16 +4,29 @@ import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import type { App } from 'aws-cdk-lib';
 import {Duration} from 'aws-cdk-lib';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import * as iam from 'aws-cdk-lib/aws-iam'
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
 		super(scope, id, props);
 
-		const executionRole = new iam.Role(this, 'ExecutionRole', {
+		const executionRole: iam.Role = new iam.Role(this, 'ExecutionRole', {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
 			path: "/",
 			inlinePolicies: {
+				logs: new iam.PolicyDocument({
+					statements: [
+						new iam.PolicyStatement({
+							actions: [ 'logs:CreateLogGroup' ],
+							resources: [ `arn:aws:logs:eu-west-1:${this.account}:*` ]
+						}),
+						new iam.PolicyStatement({
+							actions: [ 'logs:CreateLogStream', 'logs:PutLogEvents' ],
+							resources: [ `arn:aws:logs:eu-west-1:${this.account}:log-group:/aws/lambda/*:*` ]
+						})
+					] }),
 				Conf: new iam.PolicyDocument({
 					statements: [
 						new iam.PolicyStatement({
@@ -24,7 +37,7 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		})
 
-		const handler = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
+		const handler: GuLambdaFunction = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
 			handler: 'PurgerLambda::handleRequest',
 			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
 			timeout: Duration.seconds(60),
@@ -38,5 +51,21 @@ export class MobileFastlyCachePurger extends GuStack {
 			fileName: `mobile-fastly-cache-purger.jar`,
 			role: executionRole,
 		});
+
+		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
+
+		const queue: sqs.Queue = new sqs.Queue(this, "frontsPurgeSqs", {
+			visibilityTimeout: Duration.seconds(70), 	//default for a queue is 30s, and the lambda is 60s
+			deadLetterQueue: {
+				maxReceiveCount: 3,
+				queue: dlq,
+			}
+		});
+
+		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
+
+		handler.addEventSource(eventSource);
+
+
 	}
 }

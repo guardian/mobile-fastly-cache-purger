@@ -1,13 +1,20 @@
-import com.amazonaws.services.lambda.runtime.events.S3Event
+import com.amazonaws.services.lambda.runtime.events.SQSEvent
 import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
 import okhttp3._
 
+import scala.jdk.CollectionConverters._
 
-object PurgerLambda extends RequestHandler[S3Event, Boolean] {
+
+object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
-  override def handleRequest(event: S3Event, context: Context): Boolean = {
+  override def handleRequest(event: SQSEvent, context: Context): Boolean = {
 
-    println(s"Facia-purger lambda starting up")
+    val scalaRecords = event.getRecords.asScala.toList
+    val pressJobs = scalaRecords.flatMap(r => {
+      PressJob.toPressJob(r.getBody)
+    })
+    val frontPath: String = pressJobs.head.path
+
 
     val config = Config.load()
 
@@ -19,7 +26,7 @@ object PurgerLambda extends RequestHandler[S3Event, Boolean] {
      * Send a soft purge request to Fastly API.
      */
     def sendPurgeRequest(contentId: String = ""): Boolean = {
-      val surrogateKey = "Container/uk/groups/collections/0dd06021-c399-4d40-92da-04055628ac7d"
+      val surrogateKey = s"Front/$frontPath"
       val url = s"https://api.fastly.com/service/${config.fastlyServiceId}/purge/$surrogateKey"
 
       val request = new Request.Builder()
@@ -30,7 +37,7 @@ object PurgerLambda extends RequestHandler[S3Event, Boolean] {
         .build()
 
       val response = httpClient.newCall(request).execute()
-      println(s"Sent purge request for content with ID ''. Response from Fastly API: [${response.code}] [${response.body.string}]")
+      println(s"Sent purge request for content with ID [$surrogateKey]. Response from Fastly API: [${response.code}] [${response.body.string}]")
 
       response.code == 200
     }
