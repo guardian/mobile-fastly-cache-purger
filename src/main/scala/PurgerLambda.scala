@@ -10,7 +10,9 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   override def handleRequest(event: SQSEvent, context: Context): Boolean = {
 
     val records: List[PressJob] = event.getRecords.asScala.toList.flatMap(r => PressJob.toPressJob(r.getBody))
+    println("records: ", records)
     val frontPath: String = records.head.path
+    println("frontPath: ", frontPath)
 
     println(s"Facia-purger lambda starting up")
 
