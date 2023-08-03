@@ -4,8 +4,9 @@ import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import type { App } from 'aws-cdk-lib';
 import {Duration} from 'aws-cdk-lib';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import * as iam from 'aws-cdk-lib/aws-iam'
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
@@ -40,6 +41,14 @@ export class MobileFastlyCachePurger extends GuStack {
 			role: executionRole,
 		});
 
-		const queue = new sqs.Queue(this, "frontsPurgeSqs");
+		const queue = new sqs.Queue(this, "frontsPurgeSqs", {
+			queueName: 'sqs',
+		});
+
+		const eventSource = new lambdaEventSources.SqsEventSource(queue);
+
+		handler.addEventSource(eventSource);
+
+
 	}
 }

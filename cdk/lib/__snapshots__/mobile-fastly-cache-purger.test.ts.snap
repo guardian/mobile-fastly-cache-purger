@@ -171,6 +171,22 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                 ],
               },
             },
+            {
+              "Action": [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontsPurgeSqsC6BB4572",
+                  "Arn",
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -186,6 +202,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
     "frontsPurgeSqsC6BB4572": {
       "DeletionPolicy": "Delete",
       "Properties": {
+        "QueueName": "sqs",
         "Tags": [
           {
             "Key": "gu:cdk:version",
@@ -265,6 +282,20 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
         "Timeout": 60,
       },
       "Type": "AWS::Lambda::Function",
+    },
+    "mobilefastlycachepurgerSqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3DEF06EEF4": {
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "frontsPurgeSqsC6BB4572",
+            "Arn",
+          ],
+        },
+        "FunctionName": {
+          "Ref": "mobilefastlycachepurgerFDB90D2A",
+        },
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
     },
   },
 }
