@@ -171,6 +171,22 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                 ],
               },
             },
+            {
+              "Action": [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontsPurgeSqsC6BB4572",
+                  "Arn",
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -182,6 +198,116 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "frontsPurgeDlq224A89E8": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stack",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "frontsPurgeSqsC6BB4572": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "RedrivePolicy": {
+          "deadLetterTargetArn": {
+            "Fn::GetAtt": [
+              "frontsPurgeDlq224A89E8",
+              "Arn",
+            ],
+          },
+          "maxReceiveCount": 3,
+        },
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stack",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "VisibilityTimeout": 70,
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "frontsPurgeSqsMobileFastlyCachePurgerFrontsUpdateSNSTopic7A288BA5EDF5FFD8": {
+      "DependsOn": [
+        "frontsPurgeSqsPolicy6F57468C",
+      ],
+      "Properties": {
+        "Endpoint": {
+          "Fn::GetAtt": [
+            "frontsPurgeSqsC6BB4572",
+            "Arn",
+          ],
+        },
+        "Protocol": "sqs",
+        "Region": "eu-west-1",
+        "TopicArn": "arn:aws:sns:eu-west-1:163592447864:facia-CODE-FrontsUpdateSNSTopic-RepwK3g95V3w",
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "frontsPurgeSqsPolicy6F57468C": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Condition": {
+                "ArnEquals": {
+                  "aws:SourceArn": "arn:aws:sns:eu-west-1:163592447864:facia-CODE-FrontsUpdateSNSTopic-RepwK3g95V3w",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontsPurgeSqsC6BB4572",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": [
+          {
+            "Ref": "frontsPurgeSqsC6BB4572",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
     },
     "mobilefastlycachepurgerFDB90D2A": {
       "DependsOn": [
@@ -240,6 +366,20 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
         "Timeout": 60,
       },
       "Type": "AWS::Lambda::Function",
+    },
+    "mobilefastlycachepurgerSqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3DEF06EEF4": {
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "frontsPurgeSqsC6BB4572",
+            "Arn",
+          ],
+        },
+        "FunctionName": {
+          "Ref": "mobilefastlycachepurgerFDB90D2A",
+        },
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
     },
   },
 }

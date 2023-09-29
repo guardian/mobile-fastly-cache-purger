@@ -4,7 +4,11 @@ import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import type { App } from 'aws-cdk-lib';
 import {Duration} from 'aws-cdk-lib';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import * as iam from 'aws-cdk-lib/aws-iam'
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import {SqsSubscription} from "aws-cdk-lib/aws-sns-subscriptions";
 
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
@@ -38,5 +42,26 @@ export class MobileFastlyCachePurger extends GuStack {
 			fileName: `mobile-fastly-cache-purger.jar`,
 			role: executionRole,
 		});
+
+		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
+
+		const queue: sqs.Queue = new sqs.Queue(this, "frontsPurgeSqs", {
+			visibilityTimeout: Duration.seconds(70), 	//default for a queue is 30s, and the lambda is 60s
+			deadLetterQueue: {
+				maxReceiveCount: 3,
+				queue: dlq,
+			}
+		});
+
+		const frontsUpdateTopic = sns.Topic.fromTopicArn(
+			this,
+			"FrontsUpdateSNSTopic",
+			"arn:aws:sns:eu-west-1:163592447864:facia-CODE-FrontsUpdateSNSTopic-RepwK3g95V3w"
+		)
+		frontsUpdateTopic.addSubscription(new SqsSubscription(queue));
+
+		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
+
+		handler.addEventSource(eventSource);
 	}
 }
