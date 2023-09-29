@@ -74,9 +74,6 @@ export class MobileFastlyCachePurger extends GuStack {
 		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
 
 		handler.addEventSource(eventSource);
-		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
-
-		handler.addEventSource(eventSource);
 
 	}
 }
