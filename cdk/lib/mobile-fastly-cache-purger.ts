@@ -10,11 +10,6 @@ import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import {SqsSubscription} from "aws-cdk-lib/aws-sns-subscriptions";
-import {
-	ParameterDataType,
-	ParameterTier,
-	StringParameter,
-} from "aws-cdk-lib/aws-ssm";
 
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
