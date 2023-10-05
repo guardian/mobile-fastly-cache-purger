@@ -314,8 +314,21 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
           ],
         },
         "Protocol": "sqs",
-        "Region": "eu-west-1",
-        "TopicArn": "arn:aws:sns:eu-west-1:163592447864:facia-CODE-FrontsUpdateSNSTopic-RepwK3g95V3w",
+        "Region": {
+          "Ref": "AWS::Region",
+        },
+        "TopicArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:sns:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":163592447864:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
+            ],
+          ],
+        },
       },
       "Type": "AWS::SNS::Subscription",
     },
@@ -327,7 +340,18 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
               "Action": "sqs:SendMessage",
               "Condition": {
                 "ArnEquals": {
-                  "aws:SourceArn": "arn:aws:sns:eu-west-1:163592447864:facia-CODE-FrontsUpdateSNSTopic-RepwK3g95V3w",
+                  "aws:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:sns:",
+                        {
+                          "Ref": "AWS::Region",
+                        },
+                        ":163592447864:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
+                      ],
+                    ],
+                  },
                 },
               },
               "Effect": "Allow",

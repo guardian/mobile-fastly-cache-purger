@@ -402,6 +402,10 @@
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
 
+"@guardian/private-infrastructure-config@git+ssh://git@github.com:guardian/private-infrastructure-config.git#2.3.0":
+  version "2.2.0"
+  resolved "git+ssh://git@github.com:guardian/private-infrastructure-config.git#232c773a3c4af0fcf831f82a9093e67c0e1b7c51"
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.10.tgz#5a3ffe32cc9306365fb3fd572596cd602d5e12d2"
