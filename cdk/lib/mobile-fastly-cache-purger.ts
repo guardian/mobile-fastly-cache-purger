@@ -1,3 +1,4 @@
+import { GuardianAwsAccounts } from '@guardian/private-infrastructure-config';
 import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
 import { GuStack } from '@guardian/cdk/lib/constructs/core';
 import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
@@ -7,6 +8,8 @@ import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import {SqsSubscription} from "aws-cdk-lib/aws-sns-subscriptions";
 
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
@@ -62,10 +65,18 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		});
 
+		const frontsUpdateTopicName = "FrontsUpdateSNSTopic-RepwK3g95V3w";
+
+		const frontsUpdateTopic = sns.Topic.fromTopicArn(
+			this,
+			"FrontsUpdateSNSTopic",
+			`arn:aws:sns:${this.region}:${GuardianAwsAccounts.CMSFronts}:facia-${this.stage}-${frontsUpdateTopicName}`
+		)
+		frontsUpdateTopic.addSubscription(new SqsSubscription(queue));
+
 		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
 
 		handler.addEventSource(eventSource);
-
 
 	}
 }

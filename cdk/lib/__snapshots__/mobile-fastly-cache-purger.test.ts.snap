@@ -302,6 +302,80 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
+    "frontsPurgeSqsMobileFastlyCachePurgerFrontsUpdateSNSTopic7A288BA5EDF5FFD8": {
+      "DependsOn": [
+        "frontsPurgeSqsPolicy6F57468C",
+      ],
+      "Properties": {
+        "Endpoint": {
+          "Fn::GetAtt": [
+            "frontsPurgeSqsC6BB4572",
+            "Arn",
+          ],
+        },
+        "Protocol": "sqs",
+        "Region": {
+          "Ref": "AWS::Region",
+        },
+        "TopicArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:sns:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":163592447864:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "frontsPurgeSqsPolicy6F57468C": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sqs:SendMessage",
+              "Condition": {
+                "ArnEquals": {
+                  "aws:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:sns:",
+                        {
+                          "Ref": "AWS::Region",
+                        },
+                        ":163592447864:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
+                      ],
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com",
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontsPurgeSqsC6BB4572",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Queues": [
+          {
+            "Ref": "frontsPurgeSqsC6BB4572",
+          },
+        ],
+      },
+      "Type": "AWS::SQS::QueuePolicy",
+    },
     "mobilefastlycachepurgerFDB90D2A": {
       "DependsOn": [
         "ExecutionRoleDefaultPolicyA5B92313",

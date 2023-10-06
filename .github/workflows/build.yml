@@ -28,6 +28,10 @@ jobs:
           cache: sbt
           java-version: 11
 
+      - uses: guardian/actions-read-private-repos@v0.1.1
+        with:
+          private-ssh-keys: ${{ secrets.PRIVATE_INFRASTRUCTURE_CONFIG_DEPLOY_KEY }}
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
