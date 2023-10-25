@@ -2,14 +2,32 @@ import io.circe._
 import io.circe.generic.semiauto._
 import io.circe.parser._
 
+
 object PurgeEvent {}
 
-object PressJob {
+object PressJobMessage {
 
-  implicit val derivedDecoder: Decoder[PressJob] = deriveDecoder[PressJob]
+  implicit val derivedDecoderPressJob: Decoder[PressJob] = deriveDecoder[PressJob]
+  implicit val derivedDecoderPressJobMessage: Decoder[PressJobMessage] = deriveDecoder[PressJobMessage]
 
-  def toPressJob(input: String): Option[PressJob] = {
-    decode(input).toOption
+  def toPressJobMessage(input: String): Either[Error, PressJobMessage] = {
+    decode[PressJobMessage](input)
   }
 }
-case class PressJob(path: String, pressType: String)
+
+case class PressJob(path: String,
+                    pressType: String,
+                    creationTime: Long,
+                    forceConfigUpdate: Option[Boolean])
+
+
+// This is the structure of the message received from the fronts tool.
+case class PressJobMessage(Type: String,
+                           MessageId: String,
+                           TopicArn: String,
+                           Message: PressJob,
+                           Timestamp: String,
+                           SignatureVersion: Int,
+                           Signature: String,
+                           SigningCertURL: String,
+                           UnsubscribeURL: String)
