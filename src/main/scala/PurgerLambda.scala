@@ -14,6 +14,8 @@ import scala.concurrent.duration.DurationInt
 import scala.jdk.CollectionConverters._
 
 
+
+
 object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
 
@@ -38,7 +40,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     // TO-DO: Check this is correct!
     lazy val provider = new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("cmsFronts"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder("apis.facia.role", "MAPI").build(),
+      new STSAssumeRoleSessionCredentialsProvider.Builder("apis.facia.role", "mobile-fastly-cache-purger").build(),
     )
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
