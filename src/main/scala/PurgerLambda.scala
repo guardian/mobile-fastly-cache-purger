@@ -1,5 +1,5 @@
+import com.amazonaws.auth._
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{AWSCredentialsProviderChain, STSAssumeRoleSessionCredentialsProvider}
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.lambda.runtime.events.SQSEvent
 import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
@@ -40,7 +40,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     // TO-DO: Check this is correct!
     lazy val provider = new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("cmsFronts"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder("aws.cmsFronts.account.role", "mobile-fastly-cache-purger").build(),
+      new STSAssumeRoleSessionCredentialsProvider.Builder("apis.facia.role", "mobile-fastly-cache-purger").build(),
     )
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
