@@ -38,9 +38,11 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
 
     // Setting up credentials to get the config.json from the cms fronts AWS profile
     // TO-DO: Check this is correct!
-    lazy val provider = new AWSCredentialsProviderChain(
+
+
+    val provider = new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("cmsFronts"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder("apis.facia.role", "mobile-fastly-cache-purger").build(),
+      new STSAssumeRoleSessionCredentialsProvider.Builder(FaciaConfig.load().role, "mobile-fastly-cache-purger").build(),
     )
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
