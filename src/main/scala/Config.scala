@@ -1,5 +1,5 @@
-import com.gu.{AppIdentity, AwsIdentity}
 import com.gu.conf.{ConfigurationLoader, SSMConfigurationLocation}
+import com.gu.{AppIdentity, AwsIdentity}
 import com.typesafe.config.{Config => Conf}
 
 case class Config(fastlyServiceId: String, fastlyApiKey: String)

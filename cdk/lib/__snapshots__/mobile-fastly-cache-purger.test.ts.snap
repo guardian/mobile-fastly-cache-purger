@@ -114,15 +114,11 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                     "Fn::Join": [
                       "",
                       [
-                        "arn:aws:ssm:",
-                        {
-                          "Ref": "AWS::Region",
-                        },
-                        ":",
+                        "arn:aws:iam:",
                         {
                           "Ref": "AWS::AccountId",
                         },
-                        ":parameter/cache-purger/TEST",
+                        ":role/facia-PROD-StorageConsumerRole-1R9GQEVJIM323",
                       ],
                     ],
                   },
@@ -130,7 +126,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
               ],
               "Version": "2012-10-17",
             },
-            "PolicyName": "JsonConf",
+            "PolicyName": "faciaConf",
           },
         ],
         "Tags": [
