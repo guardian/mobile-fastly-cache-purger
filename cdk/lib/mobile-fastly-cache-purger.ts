@@ -37,13 +37,13 @@ export class MobileFastlyCachePurger extends GuStack {
 							resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
 						})
 					] }),
-				faciaConf: new iam.PolicyDocument({
-					statements: [
-						new iam.PolicyStatement({
-							actions: [ 'ssm:GetParametersByPath' ],
-							resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
-						})
-					] }),
+				// faciaConf: new iam.PolicyDocument({
+				// 	statements: [
+				// 		new iam.PolicyStatement({
+				// 			actions: [ 'ssm:GetParametersByPath' ],
+				// 			resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
+				// 		})
+				// 	] }),
 			}
 		})
 
