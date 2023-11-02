@@ -41,8 +41,7 @@ export class MobileFastlyCachePurger extends GuStack {
 					statements: [
 						new iam.PolicyStatement({
 							actions: [ 'ssm:GetParametersByPath' ],
-							//"arn:aws:iam::163592447864:role/facia-PROD-StorageConsumerRole-1R9GQEVJIM323"
-							resources: [ `arn:aws:iam:${this.account}:role/facia-PROD-StorageConsumerRole-1R9GQEVJIM323` ]
+							resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
 						})
 					] }),
 			}
