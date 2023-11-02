@@ -1,5 +1,5 @@
 import { GuardianAwsAccounts } from '@guardian/private-infrastructure-config';
-import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
+import { GuStackProps, GuStringParameter } from '@guardian/cdk/lib/constructs/core';
 import { GuStack } from '@guardian/cdk/lib/constructs/core';
 import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import type { App } from 'aws-cdk-lib';
@@ -14,6 +14,10 @@ import {SqsSubscription} from "aws-cdk-lib/aws-sns-subscriptions";
 export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
 		super(scope, id, props);
+
+		const faciaRole = new GuStringParameter(this, "FaciaRole", {
+			description: "ARN of the Facia cross-account role",
+		});
 
 		const executionRole: iam.Role = new iam.Role(this, 'ExecutionRole', {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -37,13 +41,14 @@ export class MobileFastlyCachePurger extends GuStack {
 							resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
 						})
 					] }),
-				// faciaConf: new iam.PolicyDocument({
-				// 	statements: [
-				// 		new iam.PolicyStatement({
-				// 			actions: [ 'ssm:GetParametersByPath' ],
-				// 			resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
-				// 		})
-				// 	] }),
+				s3: new iam.PolicyDocument({
+					statements: [
+						new iam.PolicyStatement({
+							actions: ['sts:AssumeRole'],
+							resources: [faciaRole.valueAsString]
+						})
+					]
+				})
 			}
 		})
 
