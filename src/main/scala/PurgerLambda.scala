@@ -30,7 +30,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .flatMap(r => {
         logger.info("record: " + r.getBody)
         PressJobMessage
-          .toPressJobMessage(r.getBody) match {
+          .toPressJobMessage(r.getBody.replace("\\", "")) match {
           case Left(error) => {
             logger.error(error.getMessage)
             None
