@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.gu.facia.client.{AmazonSdkS3Client, ApiClient}
 import io.circe.syntax._
 import okhttp3._
+import org.slf4j.LoggerFactory
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
@@ -18,29 +19,33 @@ import scala.jdk.CollectionConverters._
 
 object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
+  private val logger = LoggerFactory.getLogger(this.getClass)
 
   override def handleRequest(event: SQSEvent, context: Context): Boolean = {
 
     // Get the front path from the SQS message
     val scalaRecords = event.getRecords.asScala.toList
-    println("Scala records: " + scalaRecords)
+    logger.info("Scala records: " + scalaRecords)
     val pressJobs: List[PressJob] = scalaRecords
       .flatMap(r => {
-        println("record: " + r.getBody)
+        logger.info("record: " + r.getBody)
         PressJobMessage
           .toPressJobMessage(r.getBody) match {
-          case Left(error) => None //TO-DO: log error message here
+          case Left(error) => {
+            logger.error(error)
+            None
+          } //TO-DO: log error message here
           case Right(pressJob) => Some(pressJob.Message)
         }
       })
-    println("Press jobs: " + pressJobs)
+    logger.info("Press jobs: " + pressJobs)
     val purgerConfig: Config = Config.load()
-    println("Facia role: " + purgerConfig.faciaRole)
-    println("Fastly service id " + purgerConfig.fastlyServiceId)
+    logger.info("Facia role: " + purgerConfig.faciaRole)
+    logger.info("Fastly service id " + purgerConfig.fastlyServiceId)
     // Currently we do not expect to receive more than one front path in a message, but want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)
-    println("Front path list: " + frontPathList)
+    logger.info("Front path list: " + frontPathList)
 
     // Setting up credentials to get the config.json from the cms fronts AWS profile
     // TO-DO: Check this is correct!
@@ -49,13 +54,13 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       new ProfileCredentialsProvider("cmsFronts"),
       new STSAssumeRoleSessionCredentialsProvider.Builder(purgerConfig.faciaRole, "mobile-fastly-cache-purger").build(),
     )
-    println("Provider: " + provider)
+    logger.info("Provider: " + provider)
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
-    println("S3 client: " + s3Client)
+    logger.info("S3 client: " + s3Client)
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
-    println("faciaS3 client: " + faciaS3Client)
+    logger.info("faciaS3 client: " + faciaS3Client)
     val apiClient: ApiClient = new ApiClient("facia-tool-store", "CODE", faciaS3Client)
-    println("apiClient: " + apiClient)
+    logger.info("apiClient: " + apiClient)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
     val allCollectionsForFront: Future[Boolean] = apiClient
@@ -127,7 +132,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .build()
 
     val response = httpClient.newCall(request).execute()
-    println(s"Sent purge request for collections ${collectionKeys}. Response from Fastly API: [${response.code}] [${response.body.string}]")
+    logger.info(s"Sent purge request for collections ${collectionKeys}. Response from Fastly API: [${response.code}] [${response.body.string}]")
 
     response.code == 200
   }
