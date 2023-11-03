@@ -23,10 +23,8 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
 
     // Get the front path from the SQS message
     val scalaRecords = event.getRecords.asScala.toList
-    logger.info("Scala records: " + scalaRecords)
     val pressJobs: List[PressJob] = scalaRecords
       .flatMap(r => {
-        logger.info("record: " + r.getBody)
         PressJobMessage
           .toPressJobMessage(r.getBody)
           .map(_.Message)
@@ -37,18 +35,16 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
           case Right(pressJob) => Some(pressJob)
         }
       })
-    logger.info("Press jobs: " + pressJobs)
-    val purgerConfig: Config = Config.load()
-    logger.info("Facia role: " + purgerConfig.faciaRole)
-    logger.info("Fastly service id " + purgerConfig.fastlyServiceId)
+
     // Currently we do not expect to receive more than one front path in a message, but want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)
-    logger.info("Front path list: " + frontPathList)
 
     // Setting up credentials to get the config.json from the cms fronts AWS profile
     // TO-DO: Check this is correct!
 
+    val purgerConfig: Config = Config.load()
+    logger.info("Facia role: " + purgerConfig.faciaRole)
     val provider = new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("cmsFronts"),
       new STSAssumeRoleSessionCredentialsProvider.Builder(purgerConfig.faciaRole, "mobile-fastly-cache-purger").build(),
