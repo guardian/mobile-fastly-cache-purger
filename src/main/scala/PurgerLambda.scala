@@ -32,7 +32,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
         PressJobMessage
           .toPressJobMessage(r.getBody) match {
           case Left(error) => {
-            logger.error(error)
+            logger.error(error.getMessage)
             None
           } //TO-DO: log error message here
           case Right(pressJob) => Some(pressJob.Message)
