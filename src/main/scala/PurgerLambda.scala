@@ -24,12 +24,13 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     // Get the front path from the SQS message
     val scalaRecords = event.getRecords.asScala.toList
     val simplePressJobs = scalaRecords.flatMap(r => {
+      println("simple record body: " + r.getBody)
       SimplePressJob.toPressJob(r.getBody)
     })
     println("Scala records: " + scalaRecords)
     val pressJobs: List[PressJob] = scalaRecords
       .flatMap(r => {
-        println("record: " + r)
+        println("record: " + r.getBody)
         PressJobMessage
           .toPressJobMessage(r.getBody) match {
           case Left(error) => None //TO-DO: log error message here
