@@ -15,9 +15,9 @@ export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
 		super(scope, id, props);
 
-		const faciaRole = new GuStringParameter(this, "FaciaRole", {
-			description: "ARN of the Facia cross-account role",
-		});
+		// const faciaRole = new GuStringParameter(this, "FaciaRole", {
+		// 	description: "ARN of the Facia cross-account role",
+		// });
 
 		const executionRole: iam.Role = new iam.Role(this, 'ExecutionRole', {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -41,14 +41,14 @@ export class MobileFastlyCachePurger extends GuStack {
 							resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
 						})
 					] }),
-				s3: new iam.PolicyDocument({
-					statements: [
-						new iam.PolicyStatement({
-							actions: ['sts:AssumeRole'],
-							resources: [faciaRole.valueAsString]
-						})
-					]
-				})
+			// 	s3: new iam.PolicyDocument({
+			// 		statements: [
+			// 			new iam.PolicyStatement({
+			// 				actions: ['sts:AssumeRole'],
+			// 				resources: [faciaRole.valueAsString]
+			// 			})
+			// 		]
+			// 	})
 			}
 		})
 

@@ -31,7 +31,9 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
           case Right(pressJob) => Some(pressJob.Message)
         }
       })
-      val purgerConfig: Config = Config.load()
+    val purgerConfig: Config = Config.load()
+    println("Facia role: ", purgerConfig.faciaRole)
+    println("")
     // Currently we do not expect to receive more than one front path in a message, but want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)

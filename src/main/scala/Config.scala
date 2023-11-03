@@ -14,7 +14,7 @@ object Config {
   }
 
   def load(): Config = {
-    println("Loading facia-purger config...")
+    println("Loading fastly-purger config...")
 
     val config = fetchConfiguration()
     Config(config.getString("FastlyServiceId"), config.getString("FastlyAPIKey"), config.getString("apis.facia.role"))
