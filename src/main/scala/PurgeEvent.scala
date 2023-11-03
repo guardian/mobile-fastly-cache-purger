@@ -15,16 +15,6 @@ object PressJobMessage {
   }
 }
 
-object SimplePressJob {
-
-  implicit val derivedDecoder: Decoder[SimplePressJob] = deriveDecoder[SimplePressJob]
-
-  def toPressJob(input: String): Option[SimplePressJob] = {
-    decode(input).toOption
-  }
-}
-case class SimplePressJob(path: String, pressType: String)
-
 case class PressJob(path: String,
                     pressType: String,
                     creationTime: Long,
