@@ -23,6 +23,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
 
     // Get the front path from the SQS message
     val scalaRecords = event.getRecords.asScala.toList
+    println("Scala records: " + scalaRecords)
     val pressJobs: List[PressJob] = scalaRecords
       .flatMap(r => {
         PressJobMessage
@@ -31,6 +32,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
           case Right(pressJob) => Some(pressJob.Message)
         }
       })
+    println("Press jobs: " + pressJobs)
     val purgerConfig: Config = Config.load()
     println("Facia role: " + purgerConfig.faciaRole)
     println("Fastly service id " + purgerConfig.fastlyServiceId)
