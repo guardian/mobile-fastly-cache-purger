@@ -15,8 +15,6 @@ import scala.concurrent.duration.DurationInt
 import scala.jdk.CollectionConverters._
 
 
-
-
 object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
   private val logger: Logger = LoggerFactory.getLogger(this.getClass)
@@ -30,12 +28,13 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .flatMap(r => {
         logger.info("record: " + r.getBody)
         PressJobMessage
-          .toPressJobMessage(r.getBody.replace("\\", "")) match {
-          case Left(error) => {
+          .toPressJobMessage(r.getBody)
+          .map(_.Message)
+          .flatMap(PressJobMessage.toPressJob) match {
+          case Left(error) =>
             logger.error(error.getMessage)
             None
-          } //TO-DO: log error message here
-          case Right(pressJob) => Some(pressJob.Message)
+          case Right(pressJob) => Some(pressJob)
         }
       })
     logger.info("Press jobs: " + pressJobs)
@@ -84,8 +83,8 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       // if we add the front path to the list of collections ids, we should be able to call the purge function once
       .map(collectionKeys => sendCollectionPurgeRequest(collectionKeys ++ frontPathList, purgerConfig))
 
-    Await.result(allCollectionsForFront, 10.seconds)  // define the right timeout
-                                                      // is it okay to use await here?
+    Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
+    // is it okay to use await here?
 
     true
   }

@@ -1,5 +1,5 @@
 import io.circe._
-import io.circe.generic.semiauto._
+import io.circe.generic.auto._
 import io.circe.parser._
 
 
@@ -7,11 +7,15 @@ object PurgeEvent {}
 
 object PressJobMessage {
 
-  implicit val derivedDecoderPressJob: Decoder[PressJob] = deriveDecoder[PressJob]
-  implicit val derivedDecoderPressJobMessage: Decoder[PressJobMessage] = deriveDecoder[PressJobMessage]
+//  implicit val derivedDecoderPressJob: Decoder[PressJob] = deriveDecoder[PressJob]
+//  implicit val derivedDecoderPressJobMessage: Decoder[PressJobMessage] = deriveDecoder[PressJobMessage]
 
   def toPressJobMessage(input: String): Either[Error, PressJobMessage] = {
     decode[PressJobMessage](input)
+  }
+
+  def toPressJob(input: String): Either[Error, PressJob] = {
+    decode[PressJob](input)
   }
 }
 
@@ -25,7 +29,7 @@ case class PressJob(path: String,
 case class PressJobMessage(Type: String,
                            MessageId: String,
                            TopicArn: String,
-                           Message: PressJob,
+                           Message: String,
                            Timestamp: String,
                            SignatureVersion: String,
                            Signature: String,
