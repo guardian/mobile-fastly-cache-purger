@@ -10,8 +10,8 @@ object PressJobMessage {
   implicit val derivedDecoderPressJob: Decoder[PressJob] = deriveDecoder[PressJob]
   implicit val derivedDecoderPressJobMessage: Decoder[PressJobMessage] = deriveDecoder[PressJobMessage]
 
-  def toPressJobMessage(input: String): Either[Error, PressJob] = {
-    decode[PressJob](input)
+  def toPressJobMessage(input: String): Either[Error, PressJobMessage] = {
+    decode[PressJobMessage](input)
   }
 }
 
@@ -27,7 +27,7 @@ case class PressJobMessage(Type: String,
                            TopicArn: String,
                            Message: PressJob,
                            Timestamp: String,
-                           SignatureVersion: Int,
+                           SignatureVersion: String,
                            Signature: String,
                            SigningCertURL: String,
                            UnsubscribeURL: String)
