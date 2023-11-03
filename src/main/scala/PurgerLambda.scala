@@ -37,6 +37,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     // Currently we do not expect to receive more than one front path in a message, but want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)
+    println("Front path list: " + frontPathList)
 
     // Setting up credentials to get the config.json from the cms fronts AWS profile
     // TO-DO: Check this is correct!
@@ -45,9 +46,13 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       new ProfileCredentialsProvider("cmsFronts"),
       new STSAssumeRoleSessionCredentialsProvider.Builder(purgerConfig.faciaRole, "mobile-fastly-cache-purger").build(),
     )
+    println("Provider: " + provider)
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
+    println("S3 client: " + s3Client)
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
+    println("faciaS3 client: " + faciaS3Client)
     val apiClient: ApiClient = new ApiClient("facia-tool-store", "CODE", faciaS3Client)
+    println("apiClient: " + apiClient)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
     val allCollectionsForFront: Future[Boolean] = apiClient
