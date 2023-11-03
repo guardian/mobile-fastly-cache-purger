@@ -7,7 +7,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.gu.facia.client.{AmazonSdkS3Client, ApiClient}
 import io.circe.syntax._
 import okhttp3._
-import org.slf4j.LoggerFactory
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
@@ -19,7 +19,7 @@ import scala.jdk.CollectionConverters._
 
 object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   lazy val httpClient = new OkHttpClient()
-  private val logger = LoggerFactory.getLogger(this.getClass)
+  private val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   override def handleRequest(event: SQSEvent, context: Context): Boolean = {
 
