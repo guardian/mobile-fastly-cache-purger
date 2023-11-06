@@ -36,61 +36,46 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
         }
       })
 
-    // Currently we do not expect to receive more than one front path in a message, but want to anticipate
+    // Currently we do not expect to receive more than one front path in a message, but we want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)
-    println("Front path list: " + frontPathList)
 
-    // Setting up credentials to get the config.json from the cms fronts AWS profile
-    // TO-DO: Check this is correct!
-
+    // Setting up credentials to get the config.json from the CMS fronts AWS profile
     val purgerConfig: Config = Config.load()
-    logger.info("Facia role: " + purgerConfig.faciaRole)
     val provider = new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("cmsFronts"),
       new STSAssumeRoleSessionCredentialsProvider.Builder(purgerConfig.faciaRole, "mobile-fastly-cache-purger").build(),
     )
-    logger.info("Provider: " + provider)
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
-    logger.info("S3 client: " + s3Client)
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
-    logger.info("faciaS3 client: " + faciaS3Client)
     val apiClient: ApiClient = new ApiClient("facia-tool-store", "CODE", faciaS3Client)
-    logger.info("apiClient: " + apiClient)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
     val allCollectionsForFront: Future[Boolean] = apiClient
       .config
       .map(configJson =>
         frontPathList
-          .flatMap(frontPath => {
-            logger.info(s"Configjson: $configJson, frontpath: $frontPath")
+          .flatMap(frontPath =>
             configJson
               .fronts
               .get(frontPath) match {
               case Some(frontJson) => Some(frontJson.collections)
               case None => {
-                // TO-DO: log error here
+                logger.error("Front does not match any front in the config.json")
                 None
               }
             }
-          })
+          )
           .flatten
-          .distinct // TO-DO: do we need to distinct?
+          .distinct
       )
       // if we add the front path to the list of collections ids, we should be able to call the purge function once
-      .map(collectionKeys => sendCollectionPurgeRequest(collectionKeys ++ frontPathList, purgerConfig))
-
+      .map(collectionKeys => sendPurgeRequest(collectionKeys ++ frontPathList, purgerConfig))
 
     Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
-    // is it okay to use await here?
 
     true
   }
-
-  // OkHttp requires a media type even for an empty POST body
-  private def EmptyJsonBody: RequestBody =
-    RequestBody.create("", MediaType.parse("application/json; charset=utf-8"))
 
   private def JsonBody(collectionKeys: List[String]): RequestBody =
     RequestBody.create(
@@ -101,28 +86,9 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   /**
    * Send a soft purge request to Fastly API.
    */
-  private def sendPurgeRequest(frontPath: String, purgerConfig: Config, contentId: String = ""): Boolean = {
-    val surrogateKey = s"Front/$frontPath"
-    val url = s"https://api.fastly.com/service/${purgerConfig.fastlyServiceId}/purge/$surrogateKey"
 
-    val request = new Request.Builder()
-      .url(url)
-      .header("Fastly-Key", purgerConfig.fastlyApiKey)
-      .header("Fastly-Soft-Purge", "1")
-      .post(EmptyJsonBody)
-      .build()
-
-    val response = httpClient.newCall(request).execute()
-    println(s"Sent purge request for content with ID [$surrogateKey]. Response from Fastly API: [${response.code}] [${response.body.string}]")
-
-    response.code == 200
-  }
-
-  // TO-DO: rename if only this function is used
-  private def sendCollectionPurgeRequest(collectionKeys: List[String], purgerConfig: Config): Boolean = {
+  private def sendPurgeRequest(collectionKeys: List[String], purgerConfig: Config): Boolean = {
     val url = s"https://api.fastly.com/service/${purgerConfig.fastlyServiceId}/purge"
-
-    println("Collection keys: " + collectionKeys)
 
     val request = new Request.Builder()
       .url(url)
@@ -132,7 +98,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .build()
 
     val response = httpClient.newCall(request).execute()
-    logger.info(s"Sent purge request for collections ${collectionKeys}. Response from Fastly API: [${response.code}] [${response.body.string}]")
+    logger.info(s"Sent purge request for ${collectionKeys}. Response from Fastly API: [${response.code}] [${response.body.string}]")
 
     response.code == 200
   }

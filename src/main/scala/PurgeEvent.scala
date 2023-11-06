@@ -7,9 +7,6 @@ object PurgeEvent {}
 
 object PressJobMessage {
 
-//  implicit val derivedDecoderPressJob: Decoder[PressJob] = deriveDecoder[PressJob]
-//  implicit val derivedDecoderPressJobMessage: Decoder[PressJobMessage] = deriveDecoder[PressJobMessage]
-
   def toPressJobMessage(input: String): Either[Error, PressJobMessage] = {
     decode[PressJobMessage](input)
   }
