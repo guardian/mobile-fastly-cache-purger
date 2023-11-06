@@ -39,6 +39,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     // Currently we do not expect to receive more than one front path in a message, but want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)
+    println("Front path list: " + frontPathList)
 
     // Setting up credentials to get the config.json from the cms fronts AWS profile
     // TO-DO: Check this is correct!
@@ -79,6 +80,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       // if we add the front path to the list of collections ids, we should be able to call the purge function once
       .map(collectionKeys => sendCollectionPurgeRequest(collectionKeys ++ frontPathList, purgerConfig))
 
+
     Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
     // is it okay to use await here?
 
@@ -118,6 +120,8 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
   // TO-DO: rename if only this function is used
   private def sendCollectionPurgeRequest(collectionKeys: List[String], purgerConfig: Config): Boolean = {
     val url = s"https://api.fastly.com/service/${purgerConfig.fastlyServiceId}/purge"
+
+    println("Collection keys: " + collectionKeys)
 
     val request = new Request.Builder()
       .url(url)
