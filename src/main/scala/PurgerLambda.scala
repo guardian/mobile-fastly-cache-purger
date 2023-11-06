@@ -64,7 +64,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .map(configJson =>
         frontPathList
           .flatMap(frontPath => {
-            logger.info(s"$configJson, $frontPath")
+            logger.info(s"Configjson: $configJson, frontpath: $frontPath")
             configJson
               .fronts
               .get(frontPath) match {
