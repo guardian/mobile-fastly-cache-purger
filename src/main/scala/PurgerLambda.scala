@@ -63,7 +63,8 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .config
       .map(configJson =>
         frontPathList
-          .flatMap(frontPath =>
+          .flatMap(frontPath => {
+            logger.info(s"$configJson, $frontPath")
             configJson
               .fronts
               .get(frontPath) match {
@@ -73,7 +74,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
                 None
               }
             }
-          )
+          })
           .flatten
           .distinct // TO-DO: do we need to distinct?
       )
