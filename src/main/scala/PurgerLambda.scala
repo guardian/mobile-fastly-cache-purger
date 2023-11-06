@@ -35,12 +35,11 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
           case Right(pressJob) => Some(pressJob)
         }
       })
-
     // Currently we do not expect to receive more than one front path in a message, but we want to anticipate
     // for this changing in the future
     val frontPathList: List[String] = pressJobs.map(_.path)
 
-    // Setting up credentials to get the config.json from the CMS fronts AWS profile
+    // Set up credentials to get the config.json from the CMS fronts S3 bucket
     val purgerConfig: Config = Config.load()
     val provider = new AWSCredentialsProviderChain(
       new ProfileCredentialsProvider("cmsFronts"),
@@ -48,7 +47,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     )
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
-    val apiClient: ApiClient = new ApiClient("facia-tool-store", "CODE", faciaS3Client)
+    val apiClient: ApiClient = new ApiClient("facia-tool-store", "CODE", faciaS3Client) // Hardcoding to CODE for the time being
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
     val allCollectionsForFront: Future[Boolean] = apiClient
@@ -60,16 +59,14 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
               .fronts
               .get(frontPath) match {
               case Some(frontJson) => Some(frontJson.collections)
-              case None => {
+              case None =>
                 logger.error("Front does not match any front in the config.json")
                 None
-              }
             }
           )
           .flatten
           .distinct
       )
-      // if we add the front path to the list of collections ids, we should be able to call the purge function once
       .map(collectionKeys => sendPurgeRequest(collectionKeys ++ frontPathList, purgerConfig))
 
     Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
@@ -77,6 +74,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     true
   }
 
+  // Create a JSON body to be used in the purge request.
   private def JsonBody(collectionKeys: List[String]): RequestBody =
     RequestBody.create(
       Map("surrogate_keys" -> collectionKeys).asJson.noSpaces,
