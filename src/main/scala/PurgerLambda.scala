@@ -55,7 +55,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     logger.info("S3 client: " + s3Client)
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
     logger.info("faciaS3 client: " + faciaS3Client)
-    val apiClient: ApiClient = new ApiClient("facia-tool-store", "PROD", faciaS3Client)
+    val apiClient: ApiClient = new ApiClient("facia-tool-store", "CODE", faciaS3Client)
     logger.info("apiClient: " + apiClient)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
