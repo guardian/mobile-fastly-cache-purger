@@ -2,9 +2,6 @@ import io.circe._
 import io.circe.generic.auto._
 import io.circe.parser._
 
-
-object PressJobMessage {}
-
 object PressJobMessage {
 
   def toPressJobMessage(input: String): Either[Error, PressJobMessage] = {
