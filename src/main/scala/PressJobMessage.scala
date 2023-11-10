@@ -3,7 +3,7 @@ import io.circe.generic.auto._
 import io.circe.parser._
 
 
-object PurgeEvent {}
+object PressJobMessage {}
 
 object PressJobMessage {
 

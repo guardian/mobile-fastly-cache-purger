@@ -67,7 +67,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
           .flatten
           .distinct
       )
-      .map(collectionKeys => sendPurgeRequest(collectionKeys ++ frontPathList, purgerConfig))
+      .map(collectionKeys => sendPurgeRequest(collectionKeys.map(i => s"Container/$i") ++ frontPathList.map(i => s"Front/$i"), purgerConfig))
 
     Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
 
