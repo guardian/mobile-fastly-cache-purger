@@ -27,7 +27,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .flatMap(r => {
         PressJobMessage
           .toPressJobMessage(r.getBody)
-          .map(_.Message)
+          .map(_.message)
           .flatMap(PressJobMessage.toPressJob) match {
           case Left(error) =>
             logger.error(error.getMessage)
