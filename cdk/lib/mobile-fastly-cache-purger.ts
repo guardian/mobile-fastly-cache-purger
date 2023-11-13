@@ -1,5 +1,5 @@
 import { GuardianAwsAccounts } from '@guardian/private-infrastructure-config';
-import { GuStackProps, GuStringParameter } from '@guardian/cdk/lib/constructs/core';
+import { GuStackProps } from '@guardian/cdk/lib/constructs/core';
 import { GuStack } from '@guardian/cdk/lib/constructs/core';
 import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import type { App } from 'aws-cdk-lib';
