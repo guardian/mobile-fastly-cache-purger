@@ -47,7 +47,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     )
     val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
     lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
-    val apiClient: ApiClient = new ApiClient("facia-tool-store", purgerConfig.faciaEnvironment, faciaS3Client) // Hardcoding to CODE for the time being
+    val apiClient: ApiClient = new ApiClient("facia-tool-store", purgerConfig.faciaEnvironment, faciaS3Client)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
     val allCollectionsForFront: Future[Boolean] = apiClient
@@ -96,8 +96,10 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       .build()
 
     val response = httpClient.newCall(request).execute()
-    logger.info(s"Sent purge request for ${collectionKeys}. Response from Fastly API: [${response.code}] [${response.body.string}]")
-
+    response.code() match {
+      case 200 => logger.info(s"Sent purge request for ${collectionKeys}. Response from Fastly API: [${response.code}] [${response.body.string}]")
+      case _ => logger.warn(s"An error occurred. Response from Fastly API: [${response.code}] [${response.body.string}]")
+    }
     response.code == 200
   }
 

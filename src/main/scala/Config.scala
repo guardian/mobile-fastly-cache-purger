@@ -17,7 +17,6 @@ object Config {
     println("Loading fastly-purger config...")
 
     val config = fetchConfiguration()
-    println(config.getString("faciaEnvironment"))
     Config(config.getString("FastlyServiceId"), config.getString("FastlyAPIKey"), config.getString("apis.facia.role"), config.getString("apis.facia.environment"))
   }
 }
