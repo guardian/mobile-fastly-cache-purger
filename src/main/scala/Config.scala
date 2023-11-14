@@ -1,8 +1,8 @@
-import com.gu.{AppIdentity, AwsIdentity}
 import com.gu.conf.{ConfigurationLoader, SSMConfigurationLocation}
+import com.gu.{AppIdentity, AwsIdentity}
 import com.typesafe.config.{Config => Conf}
 
-case class Config(fastlyServiceId: String, fastlyApiKey: String)
+case class Config(fastlyServiceId: String, fastlyApiKey: String, faciaRole: String, faciaEnvironment: String)
 
 object Config {
 
@@ -14,10 +14,9 @@ object Config {
   }
 
   def load(): Config = {
-    println("Loading facia-purger config...")
+    println("Loading fastly-purger config...")
 
     val config = fetchConfiguration()
-
-    Config(config.getString("FastlyServiceId"), config.getString("FastlyAPIKey"))
+    Config(config.getString("FastlyServiceId"), config.getString("FastlyAPIKey"), config.getString("apis.facia.role"), config.getString("apis.facia.environment"))
   }
 }

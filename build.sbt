@@ -28,10 +28,13 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-events" % "3.11.0",
   "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.205",
   "com.amazonaws" % "aws-java-sdk-sns" % "1.12.559",
+  "com.amazonaws" % "aws-java-sdk-sts" % "1.12.576",
   "com.squareup.okhttp3" % "okhttp" % "4.9.2",
   "com.gu" %% "simple-configuration-ssm" % "1.5.6",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
   "io.circe" %% "circe-generic" % "0.15.0-M1",
-
+  "com.gu" %% "fapi-client-play28" % "4.0.6",
+  "org.slf4j" % "slf4j-api" % "2.0.9",
+  "org.slf4j" % "slf4j-simple" % "2.0.9",
 )
