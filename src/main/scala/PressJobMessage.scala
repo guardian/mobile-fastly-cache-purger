@@ -20,12 +20,12 @@ case class PressJob(path: String,
 
 
 // This is the structure of the message received from the fronts tool.
-case class PressJobMessage(`type`: String,
-                           messageId: String,
-                           topicArn: String,
-                           message: String,
-                           timestamp: String,
-                           signatureVersion: String,
-                           signature: String,
-                           signingCertUrl: String,
-                           unsubscribeUrl: String)
+case class PressJobMessage(Type: String,
+                           MessageId: String,
+                           TopicArn: String,
+                           Message: String,
+                           Timestamp: String,
+                           SignatureVersion: String,
+                           Signature: String,
+                           SigningCertURL: String,
+                           UnsubscribeURL: String)
