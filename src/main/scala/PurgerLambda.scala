@@ -55,27 +55,31 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     val apiClient: ApiClient = new ApiClient("facia-tool-store", purgerConfig.faciaEnvironment, faciaS3Client)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
-    val allCollectionsForFront: Future[Boolean] = apiClient
-      .config
-      .map(configJson =>
-        frontPathList
-          .flatMap(frontPath =>
-            configJson
-              .fronts
-              .get(frontPath) match {
-              case Some(frontJson) => Some(frontJson.collections)
-              case None =>
-                logger.error("Front does not match any front in the config.json")
-                None
-            }
-          )
-          .flatten
-          .distinct
-      )
-      .map(collectionKeys => sendPurgeRequest(collectionKeys.map(i => s"Container/$i"), purgerConfig))
+    if (frontPathList.isEmpty) {
+      logger.warn("No fronts to send a purge request for")
+    } else {
+      val allCollectionsForFront: Future[Boolean] = apiClient
+        .config
+        .map(configJson =>
+          frontPathList
+            .flatMap(frontPath =>
+              configJson
+                .fronts
+                .get(frontPath) match {
+                case Some(frontJson) => Some(frontJson.collections)
+                case None =>
+                  logger.error("Front does not match any front in the config.json")
+                  None
+              }
+            )
+            .flatten
+            .distinct
+        )
+        .map(collectionKeys => sendPurgeRequest(collectionKeys.map(i => s"Container/$i"), purgerConfig))
 
-    Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
+      Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
 
+    }
     true
   }
 
