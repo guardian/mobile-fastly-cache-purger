@@ -40,7 +40,7 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
     val frontPathList: List[String] = {
       println(pressJobs.head)
       pressJobs
-        .filter(_.pressType != "Draft") // We are not interested in draft changes
+        .filter(_.pressType != "draft") // We are not interested in draft changes
         .map(_.path)
     }
 
