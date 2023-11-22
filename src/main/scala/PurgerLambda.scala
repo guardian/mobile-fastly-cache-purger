@@ -37,12 +37,10 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
       })
     // Currently we do not expect to receive more than one front path in a message, but we want to anticipate
     // for this changing in the future
-    val frontPathList: List[String] = {
-      println(pressJobs.head)
+    val frontPathList: List[String] =
       pressJobs
         .filter(_.pressType != "draft") // We are not interested in draft changes
         .map(_.path)
-    }
 
     // Set up credentials to get the config.json from the CMS fronts S3 bucket
     val purgerConfig: Config = Config.load()
