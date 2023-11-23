@@ -11,7 +11,7 @@ This purging enables the updates to the fronts tool to be visible in the app imm
 The mobile Fastly cache purger is an AWS lambda, which sends a purge request to the Fastly API once it's triggered.
 The lambda is triggered when a message lands onto the queue, which is subscribed to the SNS topic in the CMS Fronts account.
 
-![](/Users/silvija_blaslov/Desktop/cahepurger2x.png)
+![](docs/cahepurger.png)
 
 # Cache purging
 
