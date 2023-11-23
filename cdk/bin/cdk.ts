@@ -8,3 +8,9 @@ new MobileFastlyCachePurger(app, 'MobileFastlyCachePurger-CODE', {
 	stack: 'mobile-fastly-cache-purger',
 	stage: 'CODE',
 });
+
+new MobileFastlyCachePurger(app, 'MobileFastlyCachePurger-PROD', {
+	env: { region: 'eu-west-1' },
+	stack: 'mobile-fastly-cache-purger',
+	stage: 'PROD',
+});
