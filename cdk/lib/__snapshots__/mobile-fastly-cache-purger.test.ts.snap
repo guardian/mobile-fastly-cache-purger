@@ -115,7 +115,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                 {
                   "Action": "sts:AssumeRole",
                   "Effect": "Allow",
-                  "Resource": "arn:aws:iam::163592447864:role/facia-TEST-MobileFastlyCachePurger/StorageConsumerRole-1R9GQEVJIM323",
+                  "Resource": "arn:aws:iam::163592447864:role/facia-TEST-StorageConsumerRole-1R9GQEVJIM323",
                 },
               ],
               "Version": "2012-10-17",

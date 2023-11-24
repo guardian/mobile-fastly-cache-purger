@@ -48,7 +48,7 @@ export class MobileFastlyCachePurger extends GuStack {
 					statements: [
 						new iam.PolicyStatement({
 							actions: ['sts:AssumeRole'],
-							resources: [`arn:aws:iam::${GuardianAwsAccounts.CMSFronts}:role/facia-${this.stage}-${faciaRole}`]
+							resources: [`arn:aws:iam::${GuardianAwsAccounts.CMSFronts}:role/facia-${this.stage}-${faciaRole.id}`]
 						})
 					]
 				})
