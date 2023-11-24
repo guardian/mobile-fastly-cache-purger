@@ -40,6 +40,12 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		})
 
+		//User: arn:aws:sts::201359054765:assumed-role/StackSet-RiffRaffAccess-f-RiffRaffCloudformationEx-1XQEWZT2RFY7F/AWSCloudFormation
+		// is not authorized to perform: SNS:Subscribe on resource:
+		// arn:aws:sns:eu-west-1:163592447864:facia-PROD-FrontsUpdateSNSTopic-RepwK3g95V3w
+		// because no resource-based policy allows the SNS:Subscribe action
+		// (Service: AmazonSNS; Status Code: 403; Error Code: AuthorizationError; Request ID: 9cc90544-4e0d-5b5b-b02a-589d04a26cce; Proxy: null)
+
 		const handler: GuLambdaFunction = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
 			handler: 'PurgerLambda::handleRequest',
 			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
@@ -65,7 +71,8 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		});
 
-		const frontsUpdateTopicName = "FrontsUpdateSNSTopic-RepwK3g95V3w";
+		const frontsUpdateTopicName=
+			this.stage == "CODE" ? "FrontsUpdateSNSTopic-RepwK3g95V3w" : "FrontsUpdateSNSTopic-kWN6oX2kvOmI";
 
 		const frontsUpdateTopic = sns.Topic.fromTopicArn(
 			this,
