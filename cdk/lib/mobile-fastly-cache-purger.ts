@@ -18,9 +18,6 @@ export class MobileFastlyCachePurger extends GuStack {
 
 		const faciaID = this.stage == "CODE" ? "StorageConsumerRole-1JWVQ2NTELFT7" : "StorageConsumerRole-1R9GQEVJIM323";
 
-		// const faciaRole = new GuStringParameter(this, faciaID, {
-		// 	description: "ARN of the CMS fronts cross-account role",
-		// });
 
 		const executionRole: iam.Role = new iam.Role(this, 'ExecutionRole', {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
