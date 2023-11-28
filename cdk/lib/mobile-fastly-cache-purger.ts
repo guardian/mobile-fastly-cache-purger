@@ -16,8 +16,8 @@ export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
 		super(scope, id, props);
 
-		// const faciaID = this.stage == "CODE" ? "StorageConsumerRole-1JWVQ2NTELFT7" : "StorageConsumerRole-1R9GQEVJIM323";
-		//
+		const faciaID = this.stage == "CODE" ? "StorageConsumerRole-1JWVQ2NTELFT7" : "StorageConsumerRole-1R9GQEVJIM323";
+
 		// const faciaRole = new GuStringParameter(this, faciaID, {
 		// 	description: "ARN of the CMS fronts cross-account role",
 		// });
@@ -44,14 +44,14 @@ export class MobileFastlyCachePurger extends GuStack {
 							resources: [ `arn:aws:ssm:${this.region}:${this.account}:parameter/cache-purger/${this.stage}` ]
 						})
 					] }),
-				// Assume: new iam.PolicyDocument({
-				// 	statements: [
-				// 		new iam.PolicyStatement({
-				// 			actions: ['sts:AssumeRole'],
-				// 			resources: [`arn:aws:iam::${GuardianAwsAccounts.CMSFronts}:role/facia-${this.stage}-${faciaRole.id}`]
-				// 		})
-				// 	]
-				// })
+				Assume: new iam.PolicyDocument({
+					statements: [
+						new iam.PolicyStatement({
+							actions: ['sts:AssumeRole'],
+							resources: [`arn:aws:iam::${GuardianAwsAccounts.CMSFronts}:role/facia-${this.stage}-${faciaID}`]
+						})
+					]
+				})
 			}
 		})
 
