@@ -104,6 +104,19 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
             },
             "PolicyName": "Conf",
           },
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "sts:AssumeRole",
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:iam::163592447864:role/facia-TEST-StorageConsumerRole-1R9GQEVJIM323",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "Assume",
+          },
         ],
         "Tags": [
           {
