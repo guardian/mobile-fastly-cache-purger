@@ -338,7 +338,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
               {
                 "Ref": "AWS::Region",
               },
-              ":163592447864:facia-TEST-FrontsUpdateSNSTopic-kWN6oX2kvOmI",
+              ":000000000020:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
             ],
           ],
         },
@@ -361,7 +361,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                         {
                           "Ref": "AWS::Region",
                         },
-                        ":163592447864:facia-TEST-FrontsUpdateSNSTopic-kWN6oX2kvOmI",
+                        ":000000000020:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
                       ],
                     ],
                   },
