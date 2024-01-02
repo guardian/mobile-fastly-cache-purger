@@ -1,15 +1,30 @@
 import com.gu.conf.{ConfigurationLoader, SSMConfigurationLocation}
-import com.gu.{AppIdentity, AwsIdentity}
+import com.gu.{AppIdentity, AwsIdentity, DevIdentity}
 import com.typesafe.config.{Config => Conf}
+import software.amazon.awssdk.auth.credentials.{AwsCredentialsProviderChain, DefaultCredentialsProvider, ProfileCredentialsProvider}
 
 case class Config(fastlyServiceId: String, fastlyApiKey: String, faciaRole: String, faciaEnvironment: String)
 
 object Config {
 
   private def fetchConfiguration(): Conf = {
-    val identity = AppIdentity.whoAmI(defaultAppName = "mobile-fastly-cache-purger")
-    ConfigurationLoader.load(identity) {
-      case AwsIdentity(_, _, stage, _) => SSMConfigurationLocation(s"/cache-purger/$stage")
+
+    lazy val credentials = AwsCredentialsProviderChain.of(
+      ProfileCredentialsProvider.builder.profileName("mobile").build,
+      DefaultCredentialsProvider.create
+    )
+
+
+    val defaultAppName = "mobile-fastly-cache-purger"
+    val identity = Option(System.getenv("MOBILE_LOCAL_DEV")) match {
+      case Some(_) => DevIdentity(defaultAppName)
+      case None => AppIdentity
+        .whoAmI(defaultAppName, credentials)
+        .getOrElse(DevIdentity(defaultAppName))
+    }
+
+    ConfigurationLoader.load(identity, credentials) {
+      case AwsIdentity(_, stack, stage, region) => SSMConfigurationLocation(s"/cache-purger/$stage/$stack", region)
     }
   }
 
