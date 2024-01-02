@@ -24,7 +24,7 @@ object Config {
     }
 
     ConfigurationLoader.load(identity, credentials) {
-      case AwsIdentity(_, stack, stage, region) => SSMConfigurationLocation(s"/cache-purger/$stage/$stack", region)
+      case AwsIdentity(_, _, stage, region) => SSMConfigurationLocation(s"/cache-purger/$stage", region)
     }
   }
 
