@@ -37,4 +37,5 @@ libraryDependencies ++= Seq(
   "com.gu" %% "fapi-client-play28" % "4.0.6",
   "org.slf4j" % "slf4j-api" % "2.0.9",
   "org.slf4j" % "slf4j-simple" % "2.0.9",
+ "io.netty" % "netty-codec-http2" % "4.1.100.Final"
 )
