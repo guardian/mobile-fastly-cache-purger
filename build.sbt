@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-sns" % "1.12.637",
   "com.amazonaws" % "aws-java-sdk-sts" % "1.12.637",
   "com.squareup.okhttp3" % "okhttp" % "4.9.2",
-  "com.gu" %% "simple-configuration-ssm" % "1.5.7",
+  "com.gu" %% "simple-configuration-ssm" % "1.5.8",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
   "io.circe" %% "circe-generic" % "0.15.0-M1",
