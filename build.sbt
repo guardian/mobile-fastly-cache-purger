@@ -6,7 +6,7 @@ description:= "Lambda function which purges the Fastly cache from mobile front."
 
 version := "1.0"
 
-scalaVersion := "2.13.12"
+scalaVersion := "2.13.10"
 val log4jVersion = "2.17.1"
 
 scalacOptions ++= Seq(
@@ -34,8 +34,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
   "io.circe" %% "circe-generic" % "0.15.0-M1",
-  "com.gu" %% "fapi-client-play28" % "4.0.10",
-  "org.slf4j" % "slf4j-api" % "2.0.10",
-  "org.slf4j" % "slf4j-simple" % "2.0.10",
- "io.netty" % "netty-codec-http2" % "4.1.104.Final"
+  "com.gu" %% "fapi-client-play28" % "4.0.6",
+  "org.slf4j" % "slf4j-api" % "2.0.9",
+  "org.slf4j" % "slf4j-simple" % "2.0.9",
+ "io.netty" % "netty-codec-http2" % "4.1.100.Final"
 )
