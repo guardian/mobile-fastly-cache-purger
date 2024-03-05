@@ -110,7 +110,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                 {
                   "Action": "sts:AssumeRole",
                   "Effect": "Allow",
-                  "Resource": "arn:aws:iam::163592447864:role/facia-TEST-StorageConsumerRole-1R9GQEVJIM323",
+                  "Resource": "arn:aws:iam::000000000020:role/facia-TEST-StorageConsumerRole-1R9GQEVJIM323",
                 },
               ],
               "Version": "2012-10-17",
@@ -338,7 +338,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
               {
                 "Ref": "AWS::Region",
               },
-              ":000000000020:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
+              ":000000000020:facia-TEST-FrontsUpdateSNSTopic-kWN6oX2kvOmI",
             ],
           ],
         },
@@ -361,7 +361,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                         {
                           "Ref": "AWS::Region",
                         },
-                        ":000000000020:facia-TEST-FrontsUpdateSNSTopic-RepwK3g95V3w",
+                        ":000000000020:facia-TEST-FrontsUpdateSNSTopic-kWN6oX2kvOmI",
                       ],
                     ],
                   },

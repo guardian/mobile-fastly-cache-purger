@@ -50,6 +50,7 @@ jobs:
             npm install -g yarn
             cd cdk/
             yarn install
+            yarn test
             yarn synth
 
       - name: Upload to riff-raff
