@@ -6,7 +6,7 @@ description:= "Lambda function which purges the Fastly cache from mobile front."
 
 version := "1.0"
 
-scalaVersion := "2.13.12"
+scalaVersion := "2.13.13"
 val log4jVersion = "2.17.1"
 
 scalacOptions ++= Seq(
