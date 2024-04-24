@@ -36,6 +36,6 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % "0.15.0-M1",
   "com.gu" %% "fapi-client-play28" % "7.0.0",
   "org.slf4j" % "slf4j-api" % "2.0.13",
-  "org.slf4j" % "slf4j-simple" % "2.0.12",
+  "org.slf4j" % "slf4j-simple" % "2.0.13",
  "io.netty" % "netty-codec-http2" % "4.1.109.Final"
 )
