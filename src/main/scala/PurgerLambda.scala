@@ -73,7 +73,11 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
             .flatten
             .distinct
         )
-        .map(collectionKeys => sendPurgeRequest(collectionKeys.map(i => s"Container/$i"), purgerConfig))
+        .map(collectionKeys => {
+          val containerIds = collectionKeys.map(i => s"Container/$i")
+          val bpContainerIds = collectionKeys.map(i => s"BlueprintContainer/$i")
+          sendPurgeRequest(containerIds ::: bpContainerIds, purgerConfig)
+        })
 
       Await.result(allCollectionsForFront, 10.seconds) // define the right timeout
 
