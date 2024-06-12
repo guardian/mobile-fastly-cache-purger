@@ -26,9 +26,9 @@ assembly / assemblyMergeStrategy := {
 libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
   "com.amazonaws" % "aws-lambda-java-events" % "3.11.5",
-  "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.726",
-  "com.amazonaws" % "aws-java-sdk-sns" % "1.12.726",
-  "com.amazonaws" % "aws-java-sdk-sts" % "1.12.726",
+  "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.736",
+  "com.amazonaws" % "aws-java-sdk-sns" % "1.12.736",
+  "com.amazonaws" % "aws-java-sdk-sts" % "1.12.736",
   "com.squareup.okhttp3" % "okhttp" % "4.12.0",
   "com.gu" %% "simple-configuration-ssm" % "2.0.0",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
