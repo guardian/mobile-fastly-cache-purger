@@ -25,7 +25,7 @@ assembly / assemblyMergeStrategy := {
 
 libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
-  "com.amazonaws" % "aws-lambda-java-events" % "3.12.0",
+  "com.amazonaws" % "aws-lambda-java-events" % "3.13.0",
   "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.767",
   "com.amazonaws" % "aws-java-sdk-sns" % "1.12.767",
   "com.amazonaws" % "aws-java-sdk-sts" % "1.12.767",
@@ -35,8 +35,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-core" % "0.15.0-M1",
   "io.circe" %% "circe-generic" % "0.15.0-M1",
   "com.gu" %% "fapi-client-play28" % "7.0.0",
-  "org.slf4j" % "slf4j-api" % "2.0.13",
-  "org.slf4j" % "slf4j-simple" % "2.0.13",
+  "org.slf4j" % "slf4j-api" % "2.0.14",
+  "org.slf4j" % "slf4j-simple" % "2.0.14",
   "io.netty" % "netty-codec-http2" % "4.1.112.Final",
   "com.fasterxml.jackson.core" % "jackson-core" % "2.17.2"
 )
