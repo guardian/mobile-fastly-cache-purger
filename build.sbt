@@ -28,7 +28,7 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-events" % "3.14.0",
   "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.778",
   "com.amazonaws" % "aws-java-sdk-sns" % "1.12.778",
-  "com.amazonaws" % "aws-java-sdk-sts" % "1.12.777",
+  "com.amazonaws" % "aws-java-sdk-sts" % "1.12.778",
   "com.squareup.okhttp3" % "okhttp" % "4.12.0",
   "com.gu" %% "simple-configuration-ssm" % "3.0.0",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
