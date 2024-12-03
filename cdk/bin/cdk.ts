@@ -8,7 +8,7 @@ const app = new GuRootExperimental();
 new EnvironmentAgnosticResources(app, 'EnvironmentAgnosticResources', {
 	env: { region: 'eu-west-1' },
 	stack: 'mobile-fastly-cache-purger',
-	stage: 'PROD'
+	stage: 'CODE'
 })
 new MobileFastlyCachePurger(app, 'MobileFastlyCachePurger-CODE', {
 	env: { region: 'eu-west-1' },
