@@ -73,48 +73,6 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		})
 
-		const ecrRepository = new Repository(this, 'mobile-fastly-cache-purger-repo', {
-			repositoryName: 'mobile-fastly-cache-purger',
-			imageScanOnPush: true,
-			imageTagMutability: TagMutability.IMMUTABLE
-		})
-
-		new iam.Role(this, 'CIRole', {
-			assumedBy:  new iam.FederatedPrincipal(
-				`arn:aws:iam::${GuardianAwsAccounts.Mobile}:oidc-provider/token.actions.githubusercontent.com`,
-				{
-					"StringEquals": { "token.actions.githubusercontent.com:aud": "sts.amazonaws.com" },
-					"StringLike": { "token.actions.githubusercontent.com:sub": "repo:guardian/mobile-fastly-cache-purger:*"}
-				},
-				"sts:AssumeRoleWithWebIdentity"
-				),
-			inlinePolicies: {
-				ecrToken: new iam.PolicyDocument({
-					statements: [
-						new iam.PolicyStatement({
-							actions: ['ecr:GetAuthorizationToken'],
-							resources: ['*']
-						})
-					]
-				}),
-				ecrUpload: new iam.PolicyDocument({
-					statements: [
-						new iam.PolicyStatement({
-							actions: [
-								'ecr:CompleteLayerUpload',
-								'ecr:UploadLayerPart',
-								'ecr:InitiateLayerUpload',
-								'ecr:BatchCheckLayerAvailability',
-								'ecr:PutImage'
-							],
-							resources: [ecrRepository.repositoryArn]
-						})
-					]
-				})
-
-			}
-		})
-
 		const handler: GuLambdaFunction = new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
 			handler: 'PurgerLambda::handleRequest',
 			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
