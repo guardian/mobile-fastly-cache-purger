@@ -34,6 +34,20 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'true'
+
+      - name: Build and publish docker image for content
+        run: |
+          docker build -f mobile-fastly-cache-purger.Dockerfile --platform linux/amd64 -t mobile-fastly-cache-purger:dev .
+          docker tag mobile-fastly-cache-purger:dev $LAMBDA_REPOSITORY_URL:$BUILD_NUMBER
+          docker push ${LAMBDA_REPOSITORY_URL}:${BUILD_NUMBER}
+        env:
+          LAMBDA_REPOSITORY_URL: ${{ secrets.$LAMBDA_REPOSITORY_URL }}
+          BUILD_NUMBER: ${{ github.run_number }}
+
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: eu-west-1
