@@ -44,6 +44,9 @@ jobs:
         with:
           mask-password: 'true'
 
+      - name: Clean, compile and test
+        run: sbt clean compile test assembly
+
       - name: Build and publish docker image for content
         run: |
           docker build -f mobile-fastly-cache-purger.Dockerfile --platform linux/amd64 -t mobile-fastly-cache-purger:dev .
@@ -57,9 +60,6 @@ jobs:
         with:
           aws-region: eu-west-1
           role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
-
-      - name: Clean, compile and test
-        run: sbt clean compile test assembly
 
       - name: CDK synth
         run: |
