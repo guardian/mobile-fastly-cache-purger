@@ -34,6 +34,11 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.AWS_ECR_ROLE }}
+
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
         with:
