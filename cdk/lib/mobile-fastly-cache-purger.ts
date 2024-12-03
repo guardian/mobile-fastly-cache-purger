@@ -5,19 +5,22 @@ import {GuardianAwsAccounts} from '@guardian/private-infrastructure-config';
 import type {App} from 'aws-cdk-lib';
 import {Duration} from 'aws-cdk-lib';
 import {Repository, TagMutability} from 'aws-cdk-lib/aws-ecr'
-import iam from 'aws-cdk-lib/aws-iam';
+// eslint-disable-next-line import/no-namespace -- sdf
+import * as iam from 'aws-cdk-lib/aws-iam';
 import type { FunctionProps} from 'aws-cdk-lib/aws-lambda';
 import {Code, Function, Handler, Runtime} from 'aws-cdk-lib/aws-lambda';
-import lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
+// eslint-disable-next-line import/no-namespace -- sdf
+import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 import {Topic} from 'aws-cdk-lib/aws-sns';
 import {SqsSubscription} from "aws-cdk-lib/aws-sns-subscriptions";
-import sqs from 'aws-cdk-lib/aws-sqs';
+// eslint-disable-next-line import/no-namespace -- sdf
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 interface GuFunctionDockerProps  extends Omit<FunctionProps, "code" | "handler" | "runtime">{
 	app: string;
 	repositoryArn: string;
 }
-class GuLambdaDockerFunction extends Function {
+export class GuLambdaDockerFunction extends Function {
 	constructor(scope: GuStack, id: string, props: GuFunctionDockerProps) {
 		const repository = Repository.fromRepositoryArn(scope, id, props.repositoryArn)
 		const code = Code.fromEcrImage(repository)
@@ -70,7 +73,7 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		})
 
-		const ecrRepository = new Repository(this, 'mobile-fastly-cache-purger', {
+		const ecrRepository = new Repository(this, 'mobile-fastly-cache-purger-repo', {
 			repositoryName: 'mobile-fastly-cache-purger',
 			imageScanOnPush: true,
 			imageTagMutability: TagMutability.IMMUTABLE
@@ -127,18 +130,18 @@ export class MobileFastlyCachePurger extends GuStack {
 			role: executionRole,
 		});
 
-		const lambdaFunction: GuLambdaDockerFunction = new GuLambdaDockerFunction(this, 'mobile-fastly-cache-purger', {
-			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
-			timeout: Duration.seconds(60),
-			environment: {
-				App: 'mobile-fastly-cache-purger',
-				Stack: this.stack,
-				Stage: this.stage,
-			},
-			app: 'mobile-fastly-cache-purger',
-			repositoryArn: 'arn',
-			role: executionRole,
-		});
+		// const lambdaFunction: GuLambdaDockerFunction = new GuLambdaDockerFunction(this, 'mobile-fastly-cache-purger', {
+		// 	functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
+		// 	timeout: Duration.seconds(60),
+		// 	environment: {
+		// 		App: 'mobile-fastly-cache-purger',
+		// 		Stack: this.stack,
+		// 		Stage: this.stage,
+		// 	},
+		// 	app: 'mobile-fastly-cache-purger',
+		// 	repositoryArn: 'arn',
+		// 	role: executionRole,
+		// });
 
 		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
 
@@ -163,6 +166,6 @@ export class MobileFastlyCachePurger extends GuStack {
 		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
 
 		handler.addEventSource(eventSource);
-		lambdaFunction.addEventSource(eventSource);
+		// lambdaFunction.addEventSource(eventSource);
 	}
 }
