@@ -1,5 +1,4 @@
 import {App} from "aws-cdk-lib";
-import {MobileFastlyCachePurger} from "./mobile-fastly-cache-purger";
 import {Template} from "aws-cdk-lib/assertions";
 import {EnvironmentAgnosticResources} from "./environment-agnostic-resources";
 
