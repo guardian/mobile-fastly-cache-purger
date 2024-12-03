@@ -45,7 +45,9 @@ jobs:
           mask-password: 'true'
 
       - name: Clean, compile and test
-        run: sbt clean compile test assembly
+        run: |
+            sbt clean compile test assembly
+            cp target/scala*/mobile-fastly-cache-purger.jar .
 
       - name: Build and publish docker image for content
         run: |
