@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 import { GuRootExperimental } from '@guardian/cdk/lib/experimental/constructs/root';
-import { MobileFastlyCachePurger } from '../lib/mobile-fastly-cache-purger';
 import {EnvironmentAgnosticResources} from "../lib/environment-agnostic-resources";
+import { MobileFastlyCachePurger } from '../lib/mobile-fastly-cache-purger';
 
 const app = new GuRootExperimental();
 

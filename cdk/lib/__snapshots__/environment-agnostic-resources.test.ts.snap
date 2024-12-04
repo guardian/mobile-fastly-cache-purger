@@ -6,6 +6,30 @@ exports[`The EnvironmentAgnosticResources stack matches the snapshot 1`] = `
     "gu:cdk:constructs": [],
     "gu:cdk:version": "TEST",
   },
+  "Outputs": {
+    "mobilefastlycachepurgerrepositoryarn": {
+      "Export": {
+        "Name": "mobile-fastly-cache-purger-repository-arn",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "mobilefastlycachepurgerrepo79A8A316",
+          "Arn",
+        ],
+      },
+    },
+    "mobilefastlycachepurgerrepositoryname": {
+      "Export": {
+        "Name": "mobile-fastly-cache-purger-repository-name",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "mobilefastlycachepurgerrepo79A8A316",
+          "Arn",
+        ],
+      },
+    },
+  },
   "Resources": {
     "CIRole1307643F": {
       "Properties": {

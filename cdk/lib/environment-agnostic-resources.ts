@@ -1,8 +1,10 @@
-import {Repository, TagMutability} from "aws-cdk-lib/aws-ecr";
-import * as iam from "aws-cdk-lib/aws-iam";
+import type { GuStackProps} from "@guardian/cdk/lib/constructs/core";
+import {GuStack} from "@guardian/cdk/lib/constructs/core";
 import {GuardianAwsAccounts} from "@guardian/private-infrastructure-config";
-import {GuStack, GuStackProps} from "@guardian/cdk/lib/constructs/core";
-import {App} from "aws-cdk-lib";
+import type {App} from "aws-cdk-lib";
+import {Repository, TagMutability} from "aws-cdk-lib/aws-ecr";
+import { FederatedPrincipal, PolicyDocument, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
+import { CfnOutput } from 'aws-cdk-lib/core'
 
 export class EnvironmentAgnosticResources extends GuStack {
     constructor(scope: App, id: string, props: GuStackProps) {
@@ -12,8 +14,8 @@ export class EnvironmentAgnosticResources extends GuStack {
             imageScanOnPush: true,
             imageTagMutability: TagMutability.IMMUTABLE
         })
-        new iam.Role(this, 'CIRole', {
-            assumedBy:  new iam.FederatedPrincipal(
+        new Role(this, 'CIRole', {
+            assumedBy:  new FederatedPrincipal(
                 `arn:aws:iam::${GuardianAwsAccounts.Mobile}:oidc-provider/token.actions.githubusercontent.com`,
                 {
                     "StringEquals": { "token.actions.githubusercontent.com:aud": "sts.amazonaws.com" },
@@ -22,17 +24,17 @@ export class EnvironmentAgnosticResources extends GuStack {
                 "sts:AssumeRoleWithWebIdentity"
             ),
             inlinePolicies: {
-                ecrToken: new iam.PolicyDocument({
+                ecrToken: new PolicyDocument({
                     statements: [
-                        new iam.PolicyStatement({
+                        new PolicyStatement({
                             actions: ['ecr:GetAuthorizationToken'],
                             resources: ['*']
                         })
                     ]
                 }),
-                ecrUpload: new iam.PolicyDocument({
+                ecrUpload: new PolicyDocument({
                     statements: [
-                        new iam.PolicyStatement({
+                        new PolicyStatement({
                             actions: [
                                 'ecr:CompleteLayerUpload',
                                 'ecr:UploadLayerPart',
@@ -44,9 +46,16 @@ export class EnvironmentAgnosticResources extends GuStack {
                         })
                     ]
                 })
-
             }
         })
+        new CfnOutput(this, "mobile-fastly-cache-purger-repository-arn", {
+            value: ecrRepository.repositoryArn,
+            exportName: "mobile-fastly-cache-purger-repository-arn",
+        });
+        new CfnOutput(this, "mobile-fastly-cache-purger-repository-name", {
+            value: ecrRepository.repositoryArn,
+            exportName: "mobile-fastly-cache-purger-repository-name",
+        });
     }
 }
 
