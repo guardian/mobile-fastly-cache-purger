@@ -25,3 +25,5 @@ export class GuLambdaDockerFunction extends Function {
     }
 
 }
+
+

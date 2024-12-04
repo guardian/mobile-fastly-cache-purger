@@ -6,16 +6,10 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
     "gu:cdk:constructs": [
       "GuDistributionBucketParameter",
       "GuLambdaFunction",
-      "GuLambdaDockerFunction",
     ],
     "gu:cdk:version": "TEST",
   },
   "Parameters": {
-    "BuildId": {
-      "Default": "dev",
-      "Description": "Tag to be used for the image URL, e.g. riff raff build id",
-      "Type": "String",
-    },
     "DistributionBucketName": {
       "Default": "/account/services/artifact.bucket",
       "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
@@ -463,130 +457,6 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
         },
         "FunctionName": {
           "Ref": "mobilefastlycachepurgerFDB90D2A",
-        },
-      },
-      "Type": "AWS::Lambda::EventSourceMapping",
-    },
-    "mobilefastlycachepurgerv2D2F41781": {
-      "DependsOn": [
-        "ExecutionRoleDefaultPolicyA5B92313",
-        "ExecutionRole605A040B",
-      ],
-      "Properties": {
-        "Code": {
-          "ImageUri": {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::Select": [
-                    4,
-                    {
-                      "Fn::Split": [
-                        ":",
-                        {
-                          "Fn::Join": [
-                            "",
-                            [
-                              {
-                                "Fn::ImportValue": "mobile-fastly-cache-purger-repository-arn",
-                              },
-                              ":",
-                              {
-                                "Ref": "BuildId",
-                              },
-                            ],
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-                ".dkr.ecr.",
-                {
-                  "Fn::Select": [
-                    3,
-                    {
-                      "Fn::Split": [
-                        ":",
-                        {
-                          "Fn::Join": [
-                            "",
-                            [
-                              {
-                                "Fn::ImportValue": "mobile-fastly-cache-purger-repository-arn",
-                              },
-                              ":",
-                              {
-                                "Ref": "BuildId",
-                              },
-                            ],
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-                ".",
-                {
-                  "Ref": "AWS::URLSuffix",
-                },
-                "/",
-                {
-                  "Fn::ImportValue": "mobile-fastly-cache-purger-repository-name",
-                },
-                ":latest",
-              ],
-            ],
-          },
-        },
-        "Environment": {
-          "Variables": {
-            "App": "mobile-fastly-cache-purger",
-            "Stack": "mobile-fastly-cache-purger",
-            "Stage": "TEST",
-          },
-        },
-        "FunctionName": "mobile-fastly-cache-purger-cdk-TEST-v2",
-        "PackageType": "Image",
-        "Role": {
-          "Fn::GetAtt": [
-            "ExecutionRole605A040B",
-            "Arn",
-          ],
-        },
-        "Tags": [
-          {
-            "Key": "gu:cdk:version",
-            "Value": "TEST",
-          },
-          {
-            "Key": "gu:repo",
-            "Value": "guardian/mobile-fastly-cache-purger",
-          },
-          {
-            "Key": "Stack",
-            "Value": "mobile-fastly-cache-purger",
-          },
-          {
-            "Key": "Stage",
-            "Value": "TEST",
-          },
-        ],
-        "Timeout": 60,
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "mobilefastlycachepurgerv2SqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3D4E3F597D": {
-      "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "frontsPurgeSqsC6BB4572",
-            "Arn",
-          ],
-        },
-        "FunctionName": {
-          "Ref": "mobilefastlycachepurgerv2D2F41781",
         },
       },
       "Type": "AWS::Lambda::EventSourceMapping",
