@@ -7,23 +7,24 @@ interface GuFunctionDockerProps  extends Omit<FunctionProps, "code" | "handler" 
     app: string;
     repositoryArn: string;
     repositoryName: string;
+    imageTag: string;
 }
 export class GuLambdaDockerFunction extends Function {
     constructor(scope: GuStack, id: string, props: GuFunctionDockerProps) {
+        const repo = Code.fromEcrImage(Repository.fromRepositoryAttributes(scope, id, {
+            repositoryArn: props.repositoryArn,
+            repositoryName: props.repositoryName
+        }), {
+            tagOrDigest: props.imageTag
+        })
 
         super(scope, `${id}-`, {
             ...props,
-            code: Code.fromEcrImage(Repository.fromRepositoryAttributes(scope, id, {
-                repositoryArn: props.repositoryArn,
-                repositoryName: props.repositoryName,
-            })),
+            code: repo,
             runtime: Runtime.FROM_IMAGE,
             handler: Handler.FROM_IMAGE
         })
-
-
     }
-
 }
 
 

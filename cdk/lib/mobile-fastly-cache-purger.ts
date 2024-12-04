@@ -87,8 +87,9 @@ export class MobileFastlyCachePurger extends GuStack {
 				Stage: this.stage,
 			},
 			app: 'mobile-fastly-cache-purger',
-			repositoryArn: `${imageRepositoryArn}:${buildId}`,
-			repositoryName: imageRepositoryName,
+			repositoryArn: `${imageRepositoryArn}`,
+			repositoryName: `${imageRepositoryName}`,
+			imageTag: `${buildId}`,
 			role: executionRole,
 		});
 

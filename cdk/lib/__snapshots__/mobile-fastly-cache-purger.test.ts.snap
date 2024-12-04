@@ -485,18 +485,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                       "Fn::Split": [
                         ":",
                         {
-                          "Fn::Join": [
-                            "",
-                            [
-                              {
-                                "Fn::ImportValue": "mobile-fastly-cache-purger-repository-arn",
-                              },
-                              ":",
-                              {
-                                "Ref": "BuildId",
-                              },
-                            ],
-                          ],
+                          "Fn::ImportValue": "mobile-fastly-cache-purger-repository-arn",
                         },
                       ],
                     },
@@ -510,18 +499,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                       "Fn::Split": [
                         ":",
                         {
-                          "Fn::Join": [
-                            "",
-                            [
-                              {
-                                "Fn::ImportValue": "mobile-fastly-cache-purger-repository-arn",
-                              },
-                              ":",
-                              {
-                                "Ref": "BuildId",
-                              },
-                            ],
-                          ],
+                          "Fn::ImportValue": "mobile-fastly-cache-purger-repository-arn",
                         },
                       ],
                     },
@@ -535,7 +513,10 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
                 {
                   "Fn::ImportValue": "mobile-fastly-cache-purger-repository-name",
                 },
-                ":latest",
+                ":",
+                {
+                  "Ref": "BuildId",
+                },
               ],
             ],
           },
