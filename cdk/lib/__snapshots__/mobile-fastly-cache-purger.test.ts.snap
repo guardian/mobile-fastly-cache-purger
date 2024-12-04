@@ -467,10 +467,10 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
-    "mobilefastlycachepurgerv2D2F41781": {
+    "mobilefastlycachepurgerv23E8BE308": {
       "DependsOn": [
-        "ExecutionRoleDefaultPolicyA5B92313",
-        "ExecutionRole605A040B",
+        "mobilefastlycachepurgerv2ServiceRoleDefaultPolicy14983476",
+        "mobilefastlycachepurgerv2ServiceRole49B17CDB",
       ],
       "Properties": {
         "Code": {
@@ -521,18 +521,10 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
             ],
           },
         },
-        "Environment": {
-          "Variables": {
-            "App": "mobile-fastly-cache-purger",
-            "Stack": "mobile-fastly-cache-purger",
-            "Stage": "TEST",
-          },
-        },
-        "FunctionName": "mobile-fastly-cache-purger-cdk-TEST-v2",
         "PackageType": "Image",
         "Role": {
           "Fn::GetAtt": [
-            "ExecutionRole605A040B",
+            "mobilefastlycachepurgerv2ServiceRole49B17CDB",
             "Arn",
           ],
         },
@@ -554,11 +546,91 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
             "Value": "TEST",
           },
         ],
-        "Timeout": 60,
       },
       "Type": "AWS::Lambda::Function",
     },
-    "mobilefastlycachepurgerv2SqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3D4E3F597D": {
+    "mobilefastlycachepurgerv2ServiceRole49B17CDB": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stack",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "mobilefastlycachepurgerv2ServiceRoleDefaultPolicy14983476": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:ReceiveMessage",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueUrl",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "frontsPurgeSqsC6BB4572",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "mobilefastlycachepurgerv2ServiceRoleDefaultPolicy14983476",
+        "Roles": [
+          {
+            "Ref": "mobilefastlycachepurgerv2ServiceRole49B17CDB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "mobilefastlycachepurgerv2SqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3DCF878697": {
       "Properties": {
         "EventSourceArn": {
           "Fn::GetAtt": [
@@ -567,7 +639,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
           ],
         },
         "FunctionName": {
-          "Ref": "mobilefastlycachepurgerv2D2F41781",
+          "Ref": "mobilefastlycachepurgerv23E8BE308",
         },
       },
       "Type": "AWS::Lambda::EventSourceMapping",
