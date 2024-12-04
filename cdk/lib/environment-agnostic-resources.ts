@@ -53,7 +53,7 @@ export class EnvironmentAgnosticResources extends GuStack {
             exportName: "mobile-fastly-cache-purger-repository-arn",
         });
         new CfnOutput(this, "mobile-fastly-cache-purger-repository-name", {
-            value: ecrRepository.repositoryArn,
+            value: ecrRepository.repositoryName,
             exportName: "mobile-fastly-cache-purger-repository-name",
         });
     }
