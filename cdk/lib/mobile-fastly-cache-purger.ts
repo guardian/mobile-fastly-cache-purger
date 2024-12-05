@@ -1,15 +1,20 @@
-import { GuStack } from '@guardian/cdk/lib/constructs/core';
-import type {GuStackProps } from '@guardian/cdk/lib/constructs/core';
-import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
-import { GuardianAwsAccounts } from '@guardian/private-infrastructure-config';
-import type { App } from 'aws-cdk-lib';
-import {Duration} from 'aws-cdk-lib';
+import type {GuStackProps} from '@guardian/cdk/lib/constructs/core';
+import {GuStack} from '@guardian/cdk/lib/constructs/core';
+import {GuLambdaFunction} from '@guardian/cdk/lib/constructs/lambda';
+import {GuardianAwsAccounts} from '@guardian/private-infrastructure-config';
+import type {App} from 'aws-cdk-lib';
+import {CfnParameter, Duration, Fn} from 'aws-cdk-lib';
+// eslint-disable-next-line import/no-namespace -- sdf
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import {Runtime} from 'aws-cdk-lib/aws-lambda';
+// eslint-disable-next-line import/no-namespace -- sdf
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
-import { Topic } from 'aws-cdk-lib/aws-sns';
+import {Topic} from 'aws-cdk-lib/aws-sns';
 import {SqsSubscription} from "aws-cdk-lib/aws-sns-subscriptions";
+// eslint-disable-next-line import/no-namespace -- sdf
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import {GuLambdaDockerFunction} from "./gu-lamba-docker-function";
+
 
 export class MobileFastlyCachePurger extends GuStack {
 
@@ -17,7 +22,11 @@ export class MobileFastlyCachePurger extends GuStack {
 		super(scope, id, props);
 
 		const faciaID = this.stage == "CODE" ? "StorageConsumerRole-1JWVQ2NTELFT7" : "StorageConsumerRole-1R9GQEVJIM323";
-
+		const buildId = new CfnParameter(this, 'BuildId', {
+			type: 'String',
+			default: 'dev',
+			description: 'Tag to be used for the image URL, e.g. riff raff build id',
+		}).value.toString();
 
 		const executionRole: iam.Role = new iam.Role(this, 'ExecutionRole', {
 			assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -67,6 +76,24 @@ export class MobileFastlyCachePurger extends GuStack {
 			role: executionRole,
 		});
 
+		const imageRepositoryArn = Fn.importValue('mobile-fastly-cache-purger-repository-arn')
+		const imageRepositoryName = Fn.importValue('mobile-fastly-cache-purger-repository-name')
+		new GuLambdaDockerFunction(this, 'mobile-fastly-cache-purger-v2', {
+			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}-v2`,
+			timeout: Duration.seconds(60),
+			environment: {
+				App: 'mobile-fastly-cache-purger-v2',
+				Stack: this.stack,
+				Stage: this.stage,
+			},
+			app: 'mobile-fastly-cache-purger-v2',
+			repositoryArn: `${imageRepositoryArn}`,
+			repositoryName: `${imageRepositoryName}`,
+			imageTag: `${buildId}`,
+			role: executionRole,
+			memorySize: 1024
+		});
+
 		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
 
 		const queue: sqs.Queue = new sqs.Queue(this, "frontsPurgeSqs", {
@@ -90,6 +117,5 @@ export class MobileFastlyCachePurger extends GuStack {
 		const eventSource: lambdaEventSources.SqsEventSource = new lambdaEventSources.SqsEventSource(queue);
 
 		handler.addEventSource(eventSource);
-
 	}
 }
