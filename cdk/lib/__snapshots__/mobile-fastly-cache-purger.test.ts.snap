@@ -523,7 +523,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
         },
         "Environment": {
           "Variables": {
-            "App": "mobile-fastly-cache-purger",
+            "App": "mobile-fastly-cache-purger-v2",
             "Stack": "mobile-fastly-cache-purger",
             "Stage": "TEST",
           },

@@ -82,11 +82,11 @@ export class MobileFastlyCachePurger extends GuStack {
 			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}-v2`,
 			timeout: Duration.seconds(60),
 			environment: {
-				App: 'mobile-fastly-cache-purger',
+				App: 'mobile-fastly-cache-purger-v2',
 				Stack: this.stack,
 				Stage: this.stage,
 			},
-			app: 'mobile-fastly-cache-purger',
+			app: 'mobile-fastly-cache-purger-v2',
 			repositoryArn: `${imageRepositoryArn}`,
 			repositoryName: `${imageRepositoryName}`,
 			imageTag: `${buildId}`,
