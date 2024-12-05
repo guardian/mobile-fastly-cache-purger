@@ -22,6 +22,7 @@ export class GuLambdaDockerFunction extends Function{
              ),
              runtime: Runtime.FROM_IMAGE,
              handler: Handler.FROM_IMAGE,
+             memorySize: 1024,
              ...props,
          }
         );
