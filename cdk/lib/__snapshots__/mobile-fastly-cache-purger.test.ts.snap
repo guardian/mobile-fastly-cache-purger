@@ -529,6 +529,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
           },
         },
         "FunctionName": "mobile-fastly-cache-purger-cdk-TEST-v2",
+        "MemorySize": 1024,
         "PackageType": "Image",
         "Role": {
           "Fn::GetAtt": [
