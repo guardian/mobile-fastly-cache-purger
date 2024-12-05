@@ -8,6 +8,7 @@ interface GuFunctionDockerProps  extends Omit<FunctionProps, "code" | "handler" 
     repositoryArn: string;
     repositoryName: string;
     imageTag: string;
+    memorySize: number;
 }
 export class GuLambdaDockerFunction extends Function{
 
@@ -32,7 +33,6 @@ export class GuLambdaDockerFunction extends Function{
              },
              runtime: Runtime.FROM_IMAGE,
              handler: Handler.FROM_IMAGE,
-             memorySize: 1024,
              ...props,
          }
         );

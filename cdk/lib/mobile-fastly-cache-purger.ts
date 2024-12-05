@@ -91,6 +91,7 @@ export class MobileFastlyCachePurger extends GuStack {
 			repositoryName: `${imageRepositoryName}`,
 			imageTag: `${buildId}`,
 			role: executionRole,
+			memorySize: 1024
 		});
 
 		const dlq: sqs.Queue = new sqs.Queue(this, "frontsPurgeDlq")
