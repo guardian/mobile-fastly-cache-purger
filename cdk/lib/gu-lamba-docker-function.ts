@@ -10,7 +10,13 @@ interface GuFunctionDockerProps  extends Omit<FunctionProps, "code" | "handler" 
     imageTag: string;
 }
 export class GuLambdaDockerFunction extends Function{
+
     constructor(scope: GuStack, id: string, props: GuFunctionDockerProps) {
+        const defaultEnvironmentVariables = {
+            STACK: scope.stack,
+            STAGE: scope.stage,
+            APP: props.app,
+        };
          super(scope, id, {
              code: Code.fromEcrImage(
                  Repository.fromRepositoryAttributes(scope, 'mobile-fastly-cache-purger-ecr', {
@@ -20,6 +26,10 @@ export class GuLambdaDockerFunction extends Function{
                      tagOrDigest: props.imageTag,
                  }
              ),
+             environment: {
+                 ...props.environment,
+                 ...defaultEnvironmentVariables,
+             },
              runtime: Runtime.FROM_IMAGE,
              handler: Handler.FROM_IMAGE,
              memorySize: 1024,
