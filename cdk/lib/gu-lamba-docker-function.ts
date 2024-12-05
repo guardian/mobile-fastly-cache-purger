@@ -4,6 +4,7 @@ import type { FunctionProps} from "aws-cdk-lib/aws-lambda";
 import {Code, Function, Handler, Runtime} from "aws-cdk-lib/aws-lambda";
 
 interface GuFunctionDockerProps  extends Omit<FunctionProps, "code" | "handler" | "runtime">{
+    app: string;
     repositoryArn: string;
     repositoryName: string;
     imageTag: string;
