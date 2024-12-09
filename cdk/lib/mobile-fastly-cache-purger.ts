@@ -1,12 +1,10 @@
 import type {GuStackProps} from '@guardian/cdk/lib/constructs/core';
 import {GuStack} from '@guardian/cdk/lib/constructs/core';
-import {GuLambdaFunction} from '@guardian/cdk/lib/constructs/lambda';
 import {GuardianAwsAccounts} from '@guardian/private-infrastructure-config';
 import type {App} from 'aws-cdk-lib';
 import {CfnParameter, Duration, Fn} from 'aws-cdk-lib';
 // eslint-disable-next-line import/no-namespace -- no default export
 import * as iam from 'aws-cdk-lib/aws-iam';
-import {Runtime} from 'aws-cdk-lib/aws-lambda';
 // eslint-disable-next-line import/no-namespace -- no default export
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 import {Topic} from 'aws-cdk-lib/aws-sns';
@@ -60,21 +58,6 @@ export class MobileFastlyCachePurger extends GuStack {
 				})
 			}
 		})
-
-		new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
-			handler: 'PurgerLambda::handleRequest',
-			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
-			timeout: Duration.seconds(60),
-			environment: {
-				App: 'mobile-fastly-cache-purger',
-				Stack: this.stack,
-				Stage: this.stage,
-			},
-			runtime: Runtime.JAVA_11,
-			app: 'mobile-fastly-cache-purger',
-			fileName: `mobile-fastly-cache-purger.jar`,
-			role: executionRole,
-		});
 
 		const imageRepositoryArn = Fn.importValue('mobile-fastly-cache-purger-repository-arn')
 		const imageRepositoryName = Fn.importValue('mobile-fastly-cache-purger-repository-name')

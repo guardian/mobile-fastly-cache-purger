@@ -6,6 +6,11 @@ import {Repository, TagMutability} from "aws-cdk-lib/aws-ecr";
 import { FederatedPrincipal, PolicyDocument, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
 import { CfnOutput } from 'aws-cdk-lib/core'
 
+
+/*
+* This is used to create the ecr repository to host the docker image
+* but does not need to be managed by riff raff deploys
+*  */
 export class EnvironmentAgnosticResources extends GuStack {
     constructor(scope: App, id: string, props: GuStackProps) {
         super(scope, id, props);
