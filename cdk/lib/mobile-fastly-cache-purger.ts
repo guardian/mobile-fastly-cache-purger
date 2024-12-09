@@ -1,6 +1,5 @@
 import type {GuStackProps} from '@guardian/cdk/lib/constructs/core';
 import {GuStack} from '@guardian/cdk/lib/constructs/core';
-import {GuLambdaFunction} from '@guardian/cdk/lib/constructs/lambda';
 import {GuardianAwsAccounts} from '@guardian/private-infrastructure-config';
 import type {App} from 'aws-cdk-lib';
 import {CfnParameter, Duration, Fn} from 'aws-cdk-lib';
