@@ -61,21 +61,6 @@ export class MobileFastlyCachePurger extends GuStack {
 			}
 		})
 
-		new GuLambdaFunction(this, 'mobile-fastly-cache-purger', {
-			handler: 'PurgerLambda::handleRequest',
-			functionName: `mobile-fastly-cache-purger-cdk-${this.stage}`,
-			timeout: Duration.seconds(60),
-			environment: {
-				App: 'mobile-fastly-cache-purger',
-				Stack: this.stack,
-				Stage: this.stage,
-			},
-			runtime: Runtime.JAVA_11,
-			app: 'mobile-fastly-cache-purger',
-			fileName: `mobile-fastly-cache-purger.jar`,
-			role: executionRole,
-		});
-
 		const imageRepositoryArn = Fn.importValue('mobile-fastly-cache-purger-repository-arn')
 		const imageRepositoryName = Fn.importValue('mobile-fastly-cache-purger-repository-name')
 		const handler = new GuLambdaDockerFunction(this, 'mobile-fastly-cache-purger-v2', {
