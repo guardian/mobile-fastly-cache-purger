@@ -453,20 +453,6 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       },
       "Type": "AWS::Lambda::Function",
     },
-    "mobilefastlycachepurgerSqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3DEF06EEF4": {
-      "Properties": {
-        "EventSourceArn": {
-          "Fn::GetAtt": [
-            "frontsPurgeSqsC6BB4572",
-            "Arn",
-          ],
-        },
-        "FunctionName": {
-          "Ref": "mobilefastlycachepurgerFDB90D2A",
-        },
-      },
-      "Type": "AWS::Lambda::EventSourceMapping",
-    },
     "mobilefastlycachepurgerv23E8BE308": {
       "DependsOn": [
         "ExecutionRoleDefaultPolicyA5B92313",
@@ -558,6 +544,20 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
         "Timeout": 60,
       },
       "Type": "AWS::Lambda::Function",
+    },
+    "mobilefastlycachepurgerv2SqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3DCF878697": {
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "frontsPurgeSqsC6BB4572",
+            "Arn",
+          ],
+        },
+        "FunctionName": {
+          "Ref": "mobilefastlycachepurgerv23E8BE308",
+        },
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
     },
   },
 }
