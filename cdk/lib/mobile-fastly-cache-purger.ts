@@ -5,7 +5,6 @@ import type {App} from 'aws-cdk-lib';
 import {CfnParameter, Duration, Fn} from 'aws-cdk-lib';
 // eslint-disable-next-line import/no-namespace -- no default export
 import * as iam from 'aws-cdk-lib/aws-iam';
-import {Runtime} from 'aws-cdk-lib/aws-lambda';
 // eslint-disable-next-line import/no-namespace -- no default export
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 import {Topic} from 'aws-cdk-lib/aws-sns';
