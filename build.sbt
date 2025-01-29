@@ -6,7 +6,7 @@ description:= "Lambda function which purges the Fastly cache from mobile front."
 
 version := "1.0"
 
-scalaVersion := "2.13.15"
+scalaVersion := "2.13.16"
 val log4jVersion = "2.17.1"
 
 scalacOptions ++= Seq(
@@ -37,6 +37,6 @@ libraryDependencies ++= Seq(
   "com.gu" %% "fapi-client-play28" % "7.0.0",
   "org.slf4j" % "slf4j-api" % "2.0.16",
   "org.slf4j" % "slf4j-simple" % "2.0.16",
-  "io.netty" % "netty-codec-http2" % "4.1.116.Final",
+  "io.netty" % "netty-codec-http2" % "4.1.117.Final",
   "com.fasterxml.jackson.core" % "jackson-core" % "2.18.2"
 )
