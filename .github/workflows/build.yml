@@ -72,7 +72,7 @@ jobs:
             yarn synth
 
       - name: Upload to riff-raff
-        uses: guardian/actions-riff-raff@v2
+        uses: guardian/actions-riff-raff@v4
         with:
           projectName: mobile::mobile-fastly-cache-purger
           configPath: cdk/cdk.out/riff-raff.yaml
