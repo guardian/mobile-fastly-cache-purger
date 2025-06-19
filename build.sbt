@@ -38,5 +38,5 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "2.0.17",
   "org.slf4j" % "slf4j-simple" % "2.0.17",
   "io.netty" % "netty-codec-http2" % "4.2.2.Final",
-  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.0"
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.1"
 )
