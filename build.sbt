@@ -24,19 +24,19 @@ assembly / assemblyMergeStrategy := {
 }
 
 libraryDependencies ++= Seq(
-  "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
-  "com.amazonaws" % "aws-lambda-java-events" % "3.15.0",
+  "com.amazonaws" % "aws-lambda-java-core" % "1.3.0",
+  "com.amazonaws" % "aws-lambda-java-events" % "3.16.0",
   "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.783",
   "com.amazonaws" % "aws-java-sdk-sns" % "1.12.783",
   "com.amazonaws" % "aws-java-sdk-sts" % "1.12.783",
   "com.squareup.okhttp3" % "okhttp" % "4.12.0",
-  "com.gu" %% "simple-configuration-ssm" % "5.1.1",
+  "com.gu" %% "simple-configuration-ssm" % "5.1.2",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
   "io.circe" %% "circe-generic" % "0.15.0-M1",
   "com.gu" %% "fapi-client-play28" % "7.0.0",
   "org.slf4j" % "slf4j-api" % "2.0.17",
   "org.slf4j" % "slf4j-simple" % "2.0.17",
-  "io.netty" % "netty-codec-http2" % "4.2.1.Final",
-  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.0"
+  "io.netty" % "netty-codec-http2" % "4.2.2.Final",
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.1"
 )
