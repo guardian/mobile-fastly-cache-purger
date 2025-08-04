@@ -22,6 +22,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      pull-requests: write # required since guardian/actions-riff-raff@v3
     steps:
       - uses: actions/checkout@v3
 
@@ -78,6 +79,8 @@ jobs:
         uses: guardian/actions-riff-raff@v4
         with:
           projectName: mobile::mobile-fastly-cache-purger
+          roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
           configPath: cdk/cdk.out/riff-raff.yaml
           contentDirectories: |
             mobile-fastly-cache-purger:
