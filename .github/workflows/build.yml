@@ -29,7 +29,7 @@ jobs:
       - name: Setup JDK and sbt
         uses: guardian/setup-scala@v1
 
-      - uses: guardian/actions-read-private-repos@v0.1.1
+      - uses: guardian/actions-read-private-repos@v1.0.0
         with:
           private-ssh-keys: ${{ secrets.PRIVATE_INFRASTRUCTURE_CONFIG_DEPLOY_KEY }}
 
