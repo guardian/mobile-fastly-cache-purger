@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-sqs" % "1.12.788",
   "com.amazonaws" % "aws-java-sdk-sns" % "1.12.788",
   "com.amazonaws" % "aws-java-sdk-sts" % "1.12.788",
-  "com.squareup.okhttp3" % "okhttp" % "4.12.0",
+  "com.squareup.okhttp3" % "okhttp" % "5.1.0",
   "com.gu" %% "simple-configuration-ssm" % "7.0.0",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
@@ -37,5 +37,5 @@ libraryDependencies ++= Seq(
   "com.gu" %% "fapi-client-play28" % "7.0.0",
   "org.slf4j" % "slf4j-api" % "2.0.17",
   "org.slf4j" % "slf4j-simple" % "2.0.17",
-  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.1"
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.2"
 )
