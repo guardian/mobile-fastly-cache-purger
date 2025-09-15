@@ -361,6 +361,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
+"@guardian/aws-account-setup@git+ssh://git@github.com:guardian/aws-account-setup.git#shared@1.0.0":
+  version "0.0.0"
+  resolved "git+ssh://git@github.com:guardian/aws-account-setup.git#884a4c9c9ed4bc6bc395c0bb877ab56122a88f6f"
+
 "@guardian/cdk@50.10.13":
   version "50.10.13"
   resolved "https://registry.yarnpkg.com/@guardian/cdk/-/cdk-50.10.13.tgz#7197adee5cf70bf5588ba01ce6ad6328aededbc4"
@@ -404,10 +408,6 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
-
-"@guardian/private-infrastructure-config@git+ssh://git@github.com:guardian/private-infrastructure-config.git#2.3.0":
-  version "2.2.0"
-  resolved "git+ssh://git@github.com:guardian/private-infrastructure-config.git#232c773a3c4af0fcf831f82a9093e67c0e1b7c51"
 
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"

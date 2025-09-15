@@ -12,10 +12,10 @@
     "diff": "cdk diff --path-metadata false --version-reporting false"
   },
   "devDependencies": {
+    "@guardian/aws-account-setup": "git+ssh://git@github.com:guardian/aws-account-setup.git#shared@1.0.0",
     "@guardian/cdk": "50.10.13",
     "@guardian/eslint-config-typescript": "tslib@^2.4.1",
     "@guardian/prettier": "1.0.0",
-    "@guardian/private-infrastructure-config": "git+ssh://git@github.com:guardian/private-infrastructure-config.git#2.3.0",
     "@types/jest": "^29.5.1",
     "@types/node": "18.16.1",
     "aws-cdk": "2.90.0",
