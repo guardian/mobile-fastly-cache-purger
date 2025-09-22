@@ -1,6 +1,6 @@
+import {GuardianAwsAccounts} from '@guardian/aws-account-setup';
 import type {GuStackProps} from '@guardian/cdk/lib/constructs/core';
 import {GuStack} from '@guardian/cdk/lib/constructs/core';
-import {GuardianAwsAccounts} from '@guardian/private-infrastructure-config';
 import type {App} from 'aws-cdk-lib';
 import {CfnParameter, Duration, Fn} from 'aws-cdk-lib';
 // eslint-disable-next-line import/no-namespace -- no default export
