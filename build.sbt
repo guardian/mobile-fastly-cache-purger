@@ -34,7 +34,7 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
   "io.circe" %% "circe-generic" % "0.15.0-M1",
-  "com.gu" %% "fapi-client-play28" % "7.0.0",
+  "com.gu" %% "fapi-client-play30" % "7.0.0",
   "org.slf4j" % "slf4j-api" % "2.0.17",
   "org.slf4j" % "slf4j-simple" % "2.0.17",
   "com.fasterxml.jackson.core" % "jackson-core" % "2.19.1"
