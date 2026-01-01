@@ -34,7 +34,7 @@ jobs:
           private-ssh-keys: ${{ secrets.AWS_ACCOUNT_SETUP_DEPLOY_KEY }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
 
