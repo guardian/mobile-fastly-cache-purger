@@ -1,10 +1,14 @@
-import com.amazonaws.auth._
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.regions.Regions
+
 import com.amazonaws.services.lambda.runtime.events.SQSEvent
 import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.gu.facia.client.{AmazonSdkS3Client, ApiClient}
+import software.amazon.awssdk.services.s3.S3AsyncClient
+import software.amazon.awssdk.services.sts.StsClient
+import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider
+import software.amazon.awssdk.services.sts.model.AssumeRoleRequest
+import software.amazon.awssdk.auth.credentials._
+import software.amazon.awssdk.regions.Region.EU_WEST_1
+import com.gu.facia.client.{ApiClient, Environment}
+import com.gu.etagcaching.aws.sdkv2.s3.S3ObjectFetching
 import io.circe.syntax._
 import okhttp3._
 import org.slf4j.{Logger, LoggerFactory}
@@ -44,13 +48,30 @@ object PurgerLambda extends RequestHandler[SQSEvent, Boolean] {
 
     // Set up credentials to get the config.json from the CMS fronts S3 bucket
     val purgerConfig: Config = Config.load()
-    val provider = new AWSCredentialsProviderChain(
-      new ProfileCredentialsProvider("cmsFronts"),
-      new STSAssumeRoleSessionCredentialsProvider.Builder(purgerConfig.faciaRole, "mobile-fastly-cache-purger").build(),
+
+    val stsClient = StsClient.builder()
+      .region(EU_WEST_1)
+      .build()
+    val assumeRoleRequest = AssumeRoleRequest.builder().roleArn(purgerConfig.faciaRole).roleSessionName( "mobile-fastly-cache-purger").build()
+
+
+    val provider = AwsCredentialsProviderChain.builder()
+      .credentialsProviders(
+        ProfileCredentialsProvider.create("cmsFronts"),
+        StsAssumeRoleCredentialsProvider.builder().refreshRequest(assumeRoleRequest).stsClient(stsClient).build()
+      )
+      .build()
+
+    val s3AsyncClient = S3AsyncClient.builder()
+      .region(EU_WEST_1)
+      .credentialsProvider(provider)
+      .build()
+
+    val apiClient: ApiClient =  ApiClient.withCaching(
+      "facia-tool-store",
+      Environment(purgerConfig.faciaEnvironment.toUpperCase),
+      S3ObjectFetching.byteArraysWith(s3AsyncClient)
     )
-    val s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withCredentials(provider).build()
-    lazy val faciaS3Client = AmazonSdkS3Client(s3Client)
-    val apiClient: ApiClient = new ApiClient("facia-tool-store", purgerConfig.faciaEnvironment, faciaS3Client)
 
     // Take the front path (e.g. app/front-mss) and return the list of collection IDs in that front from the config.json
     if (frontPathList.isEmpty) {
