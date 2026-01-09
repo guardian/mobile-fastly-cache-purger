@@ -57,6 +57,7 @@ jobs:
         working-directory: facia-event-purger
         run: |
             sbt clean compile test assembly  
+            cp target/scala*/mobile-fastly-cache-purger.jar .
 
       - name: Build and publish docker image for content
         working-directory: facia-event-purger
