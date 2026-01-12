@@ -37,6 +37,6 @@ libraryDependencies ++= Seq(
   "com.gu" %% "fapi-client-play30" % "28.0.1",
   "org.slf4j" % "slf4j-api" % "2.0.17",
   "org.slf4j" % "slf4j-simple" % "2.0.17",
-  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.1",
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.19.4",
   "com.gu.etag-caching" %% "aws-s3-sdk-v2" % "7.0.0"
 )
