@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-lambda-java-events" % "3.16.1",
   "software.amazon.awssdk" % "sts" % awsSdkVersion,
   "software.amazon.awssdk" % "s3" % awsSdkVersion,
-  "com.squareup.okhttp3" % "okhttp" % "4.12.0",
+  "com.squareup.okhttp3" % "okhttp" % "5.3.2",
   "com.gu" %% "simple-configuration-ssm" % "7.0.0",
   "io.circe" %% "circe-parser" % "0.15.0-M1",
   "io.circe" %% "circe-core" % "0.15.0-M1",
