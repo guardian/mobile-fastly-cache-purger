@@ -1,3 +1,29 @@
-.idea
+# Scala / sbt
 target/
 .bsp/
+.bloop
+.metals/
+metals.log
+metals.lock.db
+metals.mv.db
+.scala-build/
+
+# CDK / TypeScript
+cdk/*.js
+cdk/*.d.ts
+!cdk/jest.config.js
+!cdk/jest.setup.js
+cdk/.cdk.staging
+cdk/cdk.out
+cdk/dist
+
+# Dependencies
+node_modules/
+
+# Editor / IDE
+.idea
+.vscode/
+
+# OS noise
+.DS_Store
+*.log

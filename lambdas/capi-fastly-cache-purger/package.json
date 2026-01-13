@@ -1,0 +1,18 @@
+{
+  "name": "capi-fastly-cache-purger",
+  "version": "1.0.0",
+  "description": "CAPI Fastly cache purger lambda",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "yarn build && cd dist && zip -r ../../mobile-capi-fastly-cache-purger-lambda.zip ."
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "@types/node": "^18.16.1",
+    "typescript": "~4.9.5"
+  }
+}
