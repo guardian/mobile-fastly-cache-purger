@@ -25,7 +25,7 @@ assembly / assemblyMergeStrategy := {
 }
 
 libraryDependencies ++= Seq(
-  "com.amazonaws" % "aws-lambda-java-core" % "1.3.0",
+  "com.amazonaws" % "aws-lambda-java-core" % "1.4.0",
   "com.amazonaws" % "aws-lambda-java-events" % "3.16.1",
   "software.amazon.awssdk" % "sts" % awsSdkVersion,
   "software.amazon.awssdk" % "s3" % awsSdkVersion,
