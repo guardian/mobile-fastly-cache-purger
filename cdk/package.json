@@ -5,11 +5,17 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
+    "test:capi": "jest --selectProjects cdk-capi-fastly-cache-purger",
+    "test:facia": "jest --selectProjects cdk-facia-fastly-cache-purger",
     "test-update": "jest -u",
     "format": "prettier --write \"{lib,bin}/**/*.ts\"",
     "lint": "eslint lib/** bin/** --ext .ts --no-error-on-unmatched-pattern",
-    "synth": "cdk synth --path-metadata false --version-reporting false",
-    "diff": "cdk diff --path-metadata false --version-reporting false"
+    "synth": "yarn synth:capi && yarn synth:facia",
+    "synth:capi": "cdk synth --app 'npx ts-node bin/cdk-capi-fastly-cache-purger.ts' --output cdk.out/mobile-capi-fastly-cache-purger --path-metadata false --version-reporting false",
+    "synth:facia": "cdk synth --app 'npx ts-node bin/cdk-facia-fastly-cache-purger.ts' --output cdk.out/mobile-facia-fastly-cache-purger --path-metadata false --version-reporting false",
+    "diff": "yarn diff:capi && yarn diff:facia",
+    "diff:capi": "cdk diff --app 'npx ts-node bin/cdk-capi-fastly-cache-purger.ts' --output cdk.out/mobile-capi-fastly-cache-purger --path-metadata false --version-reporting false",
+    "diff:facia": "cdk diff --app 'npx ts-node bin/cdk-facia-fastly-cache-purger.ts' --output cdk.out/mobile-facia-fastly-cache-purger --path-metadata false --version-reporting false"
   },
   "devDependencies": {
     "@guardian/aws-account-setup": "git+ssh://git@github.com:guardian/aws-account-setup.git#shared@1.0.0",

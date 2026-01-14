@@ -79,18 +79,18 @@ jobs:
         working-directory: cdk
         run: |
           yarn install
-          yarn test
-          yarn synth
+          yarn test:facia
+          yarn synth:facia
 
       - name: Upload to riff-raff
         uses: guardian/actions-riff-raff@v4
         with:
-          projectName: mobile::mobile-fastly-cache-purger
+          projectName: mobile::mobile-facia-fastly-cache-purger
           roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          configPath: cdk/cdk.out/riff-raff.yaml
+          configPath: cdk/cdk.out/mobile-facia-fastly-cache-purger/riff-raff.yaml
           contentDirectories: |
-            mobile-fastly-cache-purger:
+            mobile-facia-fastly-cache-purger:
               - lambdas/facia-fastly-cache-purger/target/scala-2.13/mobile-fastly-cache-purger.jar
-            cdk.out:
-              - cdk/cdk.out
+            cdk.out/mobile-facia-fastly-cache-purger:
+              - cdk/cdk.out/mobile-facia-fastly-cache-purger

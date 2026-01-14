@@ -38,6 +38,9 @@ exports[`The MobileCapiFastlyCachePurger stack matches the snapshot 1`] = `
         },
         "FunctionName": "mobile-capi-fastly-cache-purger-TEST",
         "Handler": "index.handler",
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+        },
         "MemorySize": 512,
         "Role": {
           "Fn::GetAtt": [

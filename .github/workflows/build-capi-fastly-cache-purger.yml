@@ -56,8 +56,8 @@ jobs:
         working-directory: ./cdk
         run: |
           yarn install --frozen-lockfile
-          yarn test
-          yarn synth
+          yarn test:capi
+          yarn synth:capi
 
       - name: Upload to riff-raff
         uses: guardian/actions-riff-raff@v4
@@ -65,9 +65,9 @@ jobs:
           projectName: mobile::mobile-capi-fastly-cache-purger
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
-          configPath: ./cdk/cdk.out/mobile-capi-fastly-cache-purger/riff-raff.yaml
+          configPath: cdk/cdk.out/mobile-capi-fastly-cache-purger/riff-raff.yaml
           contentDirectories: |
             cdk.out/mobile-capi-fastly-cache-purger:
-             - cdk/cdk.out/mobile-capi-fastly-cache-purger/MobileCapiFastlyCachePurger-CODE.template.json
+              - cdk/cdk.out/mobile-capi-fastly-cache-purger
             mobile-capi-fastly-cache-purger:
-             - mobile-capi-fastly-cache-purger-lambda.zip
+              - mobile-capi-fastly-cache-purger-lambda.zip

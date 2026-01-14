@@ -407,6 +407,24 @@ exports[`The MobileFaciaFastlyCachePurger stack matches the snapshot 1`] = `
         "FunctionName": {
           "Ref": "mobilefastlycachepurgerv23E8BE308",
         },
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stack",
+            "Value": "mobile-fastly-cache-purger",
+          },
+          {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
       },
       "Type": "AWS::Lambda::EventSourceMapping",
     },
