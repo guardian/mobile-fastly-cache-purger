@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
+exports[`The MobileFaciaFastlyCachePurger stack matches the snapshot 1`] = `
 {
   "Metadata": {
     "gu:cdk:constructs": [
@@ -230,7 +230,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",
     },
-    "frontsPurgeSqsMobileFastlyCachePurgerFrontsUpdateSNSTopic7A288BA5EDF5FFD8": {
+    "frontsPurgeSqsMobileFaciaFastlyCachePurgerFrontsUpdateSNSTopic152DD1F7C70132CC": {
       "DependsOn": [
         "frontsPurgeSqsPolicy6F57468C",
       ],
@@ -396,7 +396,7 @@ exports[`The MobileFastlyCachePurger stack matches the snapshot 1`] = `
       },
       "Type": "AWS::Lambda::Function",
     },
-    "mobilefastlycachepurgerv2SqsEventSourceMobileFastlyCachePurgerfrontsPurgeSqsE6F58D3DCF878697": {
+    "mobilefastlycachepurgerv2SqsEventSourceMobileFaciaFastlyCachePurgerfrontsPurgeSqs682F494957C873EA": {
       "Properties": {
         "EventSourceArn": {
           "Fn::GetAtt": [
