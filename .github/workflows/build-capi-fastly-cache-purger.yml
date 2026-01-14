@@ -1,4 +1,4 @@
-name: Build
+name: capi-fastly-cache-purger CI
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Build
+name: facia-fastly-cache-purger CI
 
 on:
   push:
