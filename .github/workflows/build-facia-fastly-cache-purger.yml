@@ -1,10 +1,14 @@
-name: Build
+name: facia-fastly-cache-purger CI
 
 on:
   push:
     branches:
       - main
   pull_request:
+    paths-ignore:
+      - 'lambdas/capi-fastly-cache-purger/**'
+      - '**.md' # Exclude markdown files
+      - .nvmrc
   workflow_dispatch:
 
 # allow queued workflows to interrupt previous runs
@@ -17,7 +21,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  CI_facia_purger:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -34,9 +38,11 @@ jobs:
           private-ssh-keys: ${{ secrets.AWS_ACCOUNT_SETUP_DEPLOY_KEY }}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v5
         with:
-          node-version-file: ".nvmrc"
+          cache: 'yarn'
+          cache-dependency-path: 'cdk/yarn.lock'
+          node-version-file: '.nvmrc'
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -49,18 +55,21 @@ jobs:
           mask-password: 'true'
 
       - name: Clean, compile and test
+        working-directory: lambdas/facia-fastly-cache-purger
         run: |
-            sbt clean compile test assembly
-            cp target/scala*/mobile-fastly-cache-purger.jar .
+          sbt clean compile test assembly  
+          cp target/scala*/mobile-fastly-cache-purger.jar .
 
       - name: Build and publish docker image for content
+        working-directory: lambdas/facia-fastly-cache-purger
         run: |
+          BUILD_NUMBER=$((GITHUB_RUN_NUMBER + 500))
           docker build -f mobile-fastly-cache-purger.Dockerfile --platform linux/amd64 -t mobile-fastly-cache-purger:dev .
           docker tag mobile-fastly-cache-purger:dev ${LAMBDA_REPOSITORY_URL}:${BUILD_NUMBER}
           docker push ${LAMBDA_REPOSITORY_URL}:${BUILD_NUMBER}
         env:
           LAMBDA_REPOSITORY_URL: ${{ secrets.LAMBDA_REPOSITORY_URL }}
-          BUILD_NUMBER: ${{ github.run_number }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -68,22 +77,23 @@ jobs:
           role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
 
       - name: CDK synth
+        working-directory: cdk
         run: |
-            npm install -g yarn
-            cd cdk/
-            yarn install
-            yarn test
-            yarn synth
+          yarn install
+          yarn test:facia
+          yarn synth:facia
 
       - name: Upload to riff-raff
         uses: guardian/actions-riff-raff@v4
         with:
+          # keep old AWS stack name for riff-raff compatibility
           projectName: mobile::mobile-fastly-cache-purger
           roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          configPath: cdk/cdk.out/riff-raff.yaml
+          buildNumberOffset: '500'
+          configPath: cdk/cdk.out/mobile-facia-fastly-cache-purger/riff-raff.yaml
           contentDirectories: |
-            mobile-fastly-cache-purger:
-              - target/scala-2.13/mobile-fastly-cache-purger.jar
-            cdk.out:
-              - cdk/cdk.out
+            mobile-facia-fastly-cache-purger:
+              - lambdas/facia-fastly-cache-purger/target/scala-2.13/mobile-fastly-cache-purger.jar
+            cdk.out/mobile-facia-fastly-cache-purger:
+              - cdk/cdk.out/mobile-facia-fastly-cache-purger
