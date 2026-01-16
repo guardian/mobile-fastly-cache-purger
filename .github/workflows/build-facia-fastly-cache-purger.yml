@@ -85,7 +85,8 @@ jobs:
       - name: Upload to riff-raff
         uses: guardian/actions-riff-raff@v4
         with:
-          projectName: mobile::mobile-facia-fastly-cache-purger
+          # keep old AWS stack name for riff-raff compatibility
+          projectName: mobile::mobile-fastly-cache-purger
           roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           buildNumberOffset: '500'
