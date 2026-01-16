@@ -88,6 +88,7 @@ jobs:
           projectName: mobile::mobile-facia-fastly-cache-purger
           roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          buildNumberOffset: '500'
           configPath: cdk/cdk.out/mobile-facia-fastly-cache-purger/riff-raff.yaml
           contentDirectories: |
             mobile-facia-fastly-cache-purger:
