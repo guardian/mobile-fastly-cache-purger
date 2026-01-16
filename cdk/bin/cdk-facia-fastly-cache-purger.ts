@@ -11,13 +11,13 @@ const app = new GuRoot();
  */
 
 // Facia Fastly Cache Purger
-new MobileFaciaFastlyCachePurger(app, 'MobileFaciaFastlyCachePurger-CODE', {
+new MobileFaciaFastlyCachePurger(app, 'MobileFastlyCachePurger-CODE', {
 	env: { region: 'eu-west-1' },
 	stack: 'mobile-fastly-cache-purger',
 	stage: 'CODE',
 });
 
-new MobileFaciaFastlyCachePurger(app, 'MobileFaciaFastlyCachePurger-PROD', {
+new MobileFaciaFastlyCachePurger(app, 'MobileFastlyCachePurger-PROD', {
 	env: { region: 'eu-west-1' },
 	stack: 'mobile-fastly-cache-purger',
 	stage: 'PROD',
