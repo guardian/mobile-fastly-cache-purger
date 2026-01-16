@@ -76,4 +76,4 @@ jobs:
             cdk.out/mobile-capi-fastly-cache-purger:
               - cdk/cdk.out/mobile-capi-fastly-cache-purger
             mobile-capi-fastly-cache-purger:
-              - mobile-capi-fastly-cache-purger-lambda.zip
+              - lambdas/capi-fastly-cache-purger/mobile-capi-fastly-cache-purger-lambda.zip

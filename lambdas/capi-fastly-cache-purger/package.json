@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "dist": "yarn build && cd dist && zip -r ../../mobile-capi-fastly-cache-purger-lambda.zip ."
+    "dist": "yarn build && cd dist && zip -r ../mobile-capi-fastly-cache-purger-lambda.zip ."
   },
   "keywords": [],
   "author": "",

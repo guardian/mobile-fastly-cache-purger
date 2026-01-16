@@ -8,7 +8,7 @@ metals.lock.db
 metals.mv.db
 .scala-build/
 
-# CDK / TypeScript
+# CDK 
 cdk/*.js
 cdk/*.d.ts
 !cdk/jest.config.js
@@ -16,6 +16,10 @@ cdk/*.d.ts
 cdk/.cdk.staging
 cdk/cdk.out
 cdk/dist
+
+# TypeScript
+**/dist/
+**.zip
 
 # Dependencies
 node_modules/
