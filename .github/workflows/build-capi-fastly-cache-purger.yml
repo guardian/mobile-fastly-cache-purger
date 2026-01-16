@@ -54,6 +54,10 @@ jobs:
         working-directory: ./lambdas/capi-fastly-cache-purger
         run: yarn dist
 
+      - uses: guardian/actions-read-private-repos@v1.0.0
+        with:
+          private-ssh-keys: ${{ secrets.AWS_ACCOUNT_SETUP_DEPLOY_KEY }}
+
       - name: CDK synth
         working-directory: ./cdk
         run: |
