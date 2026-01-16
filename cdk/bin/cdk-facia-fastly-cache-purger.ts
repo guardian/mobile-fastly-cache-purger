@@ -1,6 +1,6 @@
 import { GuRoot } from '@guardian/cdk/lib/constructs/root';
 import 'source-map-support/register';
-import { MobileFaciaFastlyCachePurger } from '../lib/mobile-facia-fastly-cache-purger';
+import { MobileFastlyCachePurger } from '../lib/mobile-facia-fastly-cache-purger';
 
 const app = new GuRoot();
 
@@ -11,13 +11,13 @@ const app = new GuRoot();
  */
 
 // Facia Fastly Cache Purger
-new MobileFaciaFastlyCachePurger(app, 'MobileFastlyCachePurger-CODE', {
+new MobileFastlyCachePurger(app, 'MobileFastlyCachePurger-CODE', {
 	env: { region: 'eu-west-1' },
 	stack: 'mobile-fastly-cache-purger',
 	stage: 'CODE',
 });
 
-new MobileFaciaFastlyCachePurger(app, 'MobileFastlyCachePurger-PROD', {
+new MobileFastlyCachePurger(app, 'MobileFastlyCachePurger-PROD', {
 	env: { region: 'eu-west-1' },
 	stack: 'mobile-fastly-cache-purger',
 	stage: 'PROD',

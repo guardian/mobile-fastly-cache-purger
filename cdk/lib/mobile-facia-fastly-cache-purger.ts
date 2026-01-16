@@ -13,7 +13,7 @@ import { SqsSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { GuLambdaDockerFunction } from './gu-lamba-docker-function';
 
-export class MobileFaciaFastlyCachePurger extends GuStack {
+export class MobileFastlyCachePurger extends GuStack {
 	constructor(scope: App, id: string, props: GuStackProps) {
 		super(scope, id, props);
 
