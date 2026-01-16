@@ -35,6 +35,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
+          cache-dependency-path: './lambdas/capi-fastly-cache-purger/yarn.lock'
 
       - name: Install dependencies
         working-directory: ./lambdas/capi-fastly-cache-purger
