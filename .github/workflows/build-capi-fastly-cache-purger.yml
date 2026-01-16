@@ -40,6 +40,7 @@ jobs:
         working-directory: ./lambdas/capi-fastly-cache-purger
         run: yarn install --frozen-lockfile
 
+        # todo add linting
       - name: Run tests
         working-directory: ./lambdas/capi-fastly-cache-purger
         run: yarn test
@@ -59,7 +60,7 @@ jobs:
           yarn test
           yarn synth:capi
 
-      - name: Upload to riff-raff
+      - name: Upload artifacts to riff-raff
         uses: guardian/actions-riff-raff@v4
         with:
           projectName: mobile::mobile-capi-fastly-cache-purger

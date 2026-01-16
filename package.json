@@ -1,13 +1,5 @@
 {
   "name": "mobile-fastly-cache-purger",
   "version": "1.0.0",
-  "private": true,
-  "workspaces": [
-    "cdk",
-    "lambdas/capi-fastly-cache-purger"
-  ],
-  "scripts": {
-    "build": "yarn workspaces run build",
-    "test": "yarn workspaces run test"
-  }
+  "private": true
 }

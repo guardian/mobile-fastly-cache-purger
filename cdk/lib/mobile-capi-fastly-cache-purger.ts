@@ -14,7 +14,7 @@ export class MobileCapiFastlyCachePurger extends GuStack {
 			functionName: `mobile-capi-fastly-cache-purger-${this.stage}`,
 			fileName: 'mobile-capi-fastly-cache-purger-lambda.zip',
 			handler: 'index.handler',
-			runtime: Runtime.NODEJS_18_X,
+			runtime: Runtime.NODEJS_24_X,
 			timeout: Duration.seconds(60),
 			memorySize: 512,
 		});
